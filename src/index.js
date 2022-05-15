@@ -4,17 +4,20 @@ import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { Provider } from "react-redux";
+import { createBrowserHistory } from "history";
+import { ConnectedRouter } from "connected-react-router";
 import createStore from "./reducks/store/store";
 
-export const store = createStore();
+const history = createBrowserHistory();
+export const store = createStore(history);
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
-  <React.StrictMode>
-    <Provider store={store}>
+  <Provider store={store}>
+    <ConnectedRouter history={history}>
       <App />
-    </Provider>
-  </React.StrictMode>
+    </ConnectedRouter>
+  </Provider>
 );
 
 // If you want to start measuring performance in your app, pass a function
