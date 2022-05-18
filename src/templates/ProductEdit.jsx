@@ -1,5 +1,6 @@
 import { useCallback, useState } from 'react';
 import { useDispatch } from 'react-redux';
+import ImageArea from '../components/Products/ImageArea';
 import { TextInput, SelectBox, PrimaryButton } from '../components/UIkit';
 import { saveProduct } from '../reducks/products/operations';
 
@@ -10,6 +11,7 @@ const ProductEdit = () => {
     [description, setDescription] = useState(''),
     [category, setCategory] = useState(''),
     [gender, setGender] = useState(''),
+    [images, setImages] = useState([]),
     [price, setPrice] = useState('');
 
   const inputName = useCallback((event) => {
@@ -36,10 +38,22 @@ const ProductEdit = () => {
     { id: 'female', value: 3, name: 'レディース' }
   ];
 
+  const uploadImage = useCallback((event) => {
+    const file = event.target.file;
+    let blob = new Blob(file, { type: "iamge/jpeg" });
+
+    const S = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    const N = 16;
+    const fileName = Array.from(crypto.getRandomValues(new Uint32Array(N))).map((n) => S[n % S.length]).join('');
+
+    // const uploadRef = storage;
+  });
+
   return (
     <section>
       <h2 className="u-text__headline u-text-center">商品の登録・編集</h2>
       <div className="c-section-container">
+        <ImageArea images={images} setImages={setImages} />
         <TextInput
           fullWidth={true} label={"商品名"} multiline={false} required={true} onChange={inputName} rows={1} value={name} type={"text"}
         />
