@@ -1,6 +1,9 @@
 import { IconButton } from "@material-ui/core";
 import { makeStyles } from "@material-ui/styles";
 import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate';
+import { useCallback } from "react";
+import { deleteImageFile, downloadImageUrl, getImageRef, uploadFile } from "../../firebase";
+import ImagePreview from "./ImagePreview";
 
 const useStyles = makeStyles({
   icon: {
@@ -9,17 +12,51 @@ const useStyles = makeStyles({
   }
 });
 
+
 const ImageArea = (props) => {
   const classes = useStyles();
 
+  const uploadImage = useCallback((event) => {
+    const file = event.target.files;
+    let blob = new Blob(file, { type: "image/jpeg" });
+
+    const S = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    const N = 16;
+    const fileName = Array.from(crypto.getRandomValues(new Uint32Array(N))).map((n) => S[n % S.length]).join('');
+
+    const uploadRef = getImageRef(fileName);
+    uploadFile(uploadRef, blob).then(() => {
+      downloadImageUrl(fileName).then((downloadURL) => {
+        const newImage = { id: fileName, path: downloadURL };
+        props.setImages((prevState => [...prevState, newImage]));
+      });
+    });
+  });
+
+  const deleteImage = useCallback(async (id) => {
+    const ret = window.confirm('この画像を削除しますか？');
+    if (!ret) {
+      return false;
+    } else {
+      const newImages = props.images.filter(image => image.id !== id);
+      props.setImages(newImages);
+      deleteImageFile(id);
+    }
+  }, [props.images]);
+
   return (
     <div>
+      <div className="p-grid__list-images">
+        {props.images.length > 0 && (
+          props.images.map(image => <ImagePreview delete={deleteImage} id={image.id} path={image.path} key={image.id} />)
+        )}
+      </div>
       <div className="u-text-right">
         <span>商品画像を登録する</span>
         <IconButton className={classes.icon}>
           <label>
             <AddPhotoAlternateIcon />
-            <input className="u-display-none" type="file" id="image" />
+            <input className="u-display-none" type="file" id="image" onChange={(event) => uploadImage(event)} />
           </label>
         </IconButton>
       </div>

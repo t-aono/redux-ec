@@ -15,7 +15,13 @@ import {
   getDoc,
   collection,
 } from "firebase/firestore";
-import "firebase/storage";
+import {
+  getDownloadURL,
+  getStorage,
+  ref,
+  uploadBytes,
+  deleteObject,
+} from "firebase/storage";
 import "firebase/functions";
 import { firebaseConfig } from "./config";
 
@@ -38,5 +44,12 @@ export const saveDoc = (collection, id, data) =>
 export const getSnapshot = (collection, id) => getDoc(doc(db, collection, id));
 export const firebaseTimestamp = Timestamp;
 
-// export const storage = firebase.storage();
+export const storage = getStorage(app);
+export const getImageRef = (fileName) => ref(storage, `images/${fileName}`);
+export const uploadFile = (storageRef, file) => uploadBytes(storageRef, file);
+export const downloadImageUrl = (fileName) =>
+  getDownloadURL(ref(storage, `images/${fileName}`));
+export const deleteImageFile = (fileName) =>
+  deleteObject(storage, `images/${fileName}`);
+
 // export const functions = firebase.functions();

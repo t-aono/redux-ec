@@ -1,7 +1,14 @@
 import { firebaseTimestamp, getDocRef, saveDoc } from "../../firebase";
 import { push } from "connected-react-router";
 
-export const saveProduct = (name, description, category, gender, price) => {
+export const saveProduct = (
+  name,
+  description,
+  category,
+  gender,
+  images,
+  price
+) => {
   return async (dispatch) => {
     const timestamp = firebaseTimestamp.now();
 
@@ -9,6 +16,7 @@ export const saveProduct = (name, description, category, gender, price) => {
       category: category,
       description: description,
       gender: gender,
+      images: images,
       name: name,
       price: parseInt(price, 10),
       update_at: timestamp,

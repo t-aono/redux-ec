@@ -38,17 +38,6 @@ const ProductEdit = () => {
     { id: 'female', value: 3, name: 'レディース' }
   ];
 
-  const uploadImage = useCallback((event) => {
-    const file = event.target.file;
-    let blob = new Blob(file, { type: "iamge/jpeg" });
-
-    const S = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
-    const N = 16;
-    const fileName = Array.from(crypto.getRandomValues(new Uint32Array(N))).map((n) => S[n % S.length]).join('');
-
-    // const uploadRef = storage;
-  });
-
   return (
     <section>
       <h2 className="u-text__headline u-text-center">商品の登録・編集</h2>
@@ -71,7 +60,7 @@ const ProductEdit = () => {
         />
         <div className="module-spacer--medium"></div>
         <div className='center'>
-          <PrimaryButton label={"商品情報を保存"} onClick={() => dispatch(saveProduct(name, description, category, gender, price))} />
+          <PrimaryButton label={"商品情報を保存"} onClick={() => dispatch(saveProduct(name, description, category, gender, images, price))} />
         </div>
       </div>
 
