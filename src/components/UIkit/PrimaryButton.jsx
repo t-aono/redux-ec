@@ -1,4 +1,4 @@
-import Button from '@material-ui/core/Button'
+import Button from '@material-ui/core/Button';
 import { makeStyles } from "@material-ui/styles";
 
 const useStyles = makeStyles({
@@ -10,7 +10,7 @@ const useStyles = makeStyles({
     marginButton: 16,
     width: 256
   }
-})
+});
 
 const PrimaryButton = (props) => {
   const classes = useStyles();
@@ -20,6 +20,6 @@ const PrimaryButton = (props) => {
       {props.label}
     </Button>
   );
-}
+};
 
 export default PrimaryButton;

@@ -13,6 +13,7 @@ import {
   setDoc,
   Timestamp,
   getDoc,
+  collection,
 } from "firebase/firestore";
 import "firebase/storage";
 import "firebase/functions";
@@ -31,6 +32,7 @@ export const resetPasswordWithEmail = (email) =>
   sendPasswordResetEmail(auth, email);
 
 export const db = getFirestore(app);
+export const getDocRef = (param) => doc(collection(db, param));
 export const saveDoc = (collection, id, data) =>
   setDoc(doc(db, collection, id), data);
 export const getSnapshot = (collection, id) => getDoc(doc(db, collection, id));
