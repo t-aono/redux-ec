@@ -2,12 +2,14 @@ import { firebaseTimestamp, getDocRef, saveDoc } from "../../firebase";
 import { push } from "connected-react-router";
 
 export const saveProduct = (
+  id,
   name,
   description,
   category,
   gender,
   images,
-  price
+  price,
+  sizes
 ) => {
   return async (dispatch) => {
     const timestamp = firebaseTimestamp.now();
@@ -19,13 +21,16 @@ export const saveProduct = (
       images: images,
       name: name,
       price: parseInt(price, 10),
+      sizes: sizes,
       update_at: timestamp,
     };
 
-    const ref = getDocRef("products");
-    const id = ref.id;
-    data.id = id;
-    data.created_at = timestamp;
+    if (id === "") {
+      const ref = getDocRef("products");
+      id = ref.id;
+      data.id = id;
+      data.created_at = timestamp;
+    }
 
     return saveDoc("products", id, data)
       .then(() => {

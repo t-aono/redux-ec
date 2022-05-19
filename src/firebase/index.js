@@ -40,7 +40,7 @@ export const resetPasswordWithEmail = (email) =>
 export const db = getFirestore(app);
 export const getDocRef = (param) => doc(collection(db, param));
 export const saveDoc = (collection, id, data) =>
-  setDoc(doc(db, collection, id), data);
+  setDoc(doc(db, collection, id), data, { merge: true });
 export const getSnapshot = (collection, id) => getDoc(doc(db, collection, id));
 export const firebaseTimestamp = Timestamp;
 
