@@ -13,7 +13,10 @@ import {
   setDoc,
   Timestamp,
   getDoc,
+  getDocs,
   collection,
+  query,
+  orderBy,
 } from "firebase/firestore";
 import {
   getDownloadURL,
@@ -28,27 +31,46 @@ import { firebaseConfig } from "./config";
 const app = initializeApp(firebaseConfig);
 
 export const auth = getAuth();
+
 export const onAuthState = (callback) => onAuthStateChanged(auth, callback);
+
 export const createUser = (email, password) =>
   createUserWithEmailAndPassword(auth, email, password);
+
 export const signInWithEmail = (email, password) =>
   signInWithEmailAndPassword(auth, email, password);
+
 export const signOutAuth = () => signOut(auth);
+
 export const resetPasswordWithEmail = (email) =>
   sendPasswordResetEmail(auth, email);
 
 export const db = getFirestore(app);
+
 export const getDocRef = (param) => doc(collection(db, param));
-export const saveDoc = (collection, id, data) =>
-  setDoc(doc(db, collection, id), data, { merge: true });
-export const getSnapshot = (collection, id) => getDoc(doc(db, collection, id));
+
+export const saveDoc = (collectionName, id, data) =>
+  setDoc(doc(db, collectionName, id), data, { merge: true });
+
+export const getSnapshot = (collectionName, id) =>
+  getDoc(doc(db, collectionName, id));
+
+export const getCollection = (collectionName) => {
+  const q = query(collection(db, collectionName));
+  return getDocs(q);
+};
+
 export const firebaseTimestamp = Timestamp;
 
 export const storage = getStorage(app);
+
 export const getImageRef = (fileName) => ref(storage, `images/${fileName}`);
+
 export const uploadFile = (storageRef, file) => uploadBytes(storageRef, file);
+
 export const downloadImageUrl = (fileName) =>
   getDownloadURL(ref(storage, `images/${fileName}`));
+
 export const deleteImageFile = (fileName) =>
   deleteObject(storage, `images/${fileName}`);
 
