@@ -10,8 +10,6 @@ const ProductList = () => {
   const selector = useSelector((state) => state);
   const products = getProducts(selector);
 
-  console.log(products);
-
   useEffect(() => {
     dispatch(fetchProducts());
   }, []);
@@ -21,7 +19,7 @@ const ProductList = () => {
       <div className="p-grid__row">
         {products.length > 0 && (
           products.map(product => (
-            <ProductCard key={product.id} />
+            <ProductCard key={product.id} id={product.id} images={product.images} name={product.name} price={product.price} />
           ))
         )}
       </div>

@@ -42,7 +42,6 @@ const SetSizeArea = (props) => {
     if (size === '' || quantity === 0) {
       return false;
     } else {
-      console.log(index);
       if (index === props.sizes.length) {
         props.setSizes(prevState => [...prevState, { size, quantity }]);
         setIndex(index + 1);

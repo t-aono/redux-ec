@@ -17,6 +17,7 @@ import {
   collection,
   query,
   orderBy,
+  deleteDoc,
 } from "firebase/firestore";
 import {
   getDownloadURL,
@@ -59,6 +60,9 @@ export const getQuery = (collectionName, order, sort) =>
   query(collection(db, collectionName), orderBy(order, sort));
 
 export const getCollection = async (query) => await getDocs(query);
+
+export const removeDoc = (collectionName, id) =>
+  deleteDoc(doc(db, collectionName, id));
 
 export const firebaseTimestamp = Timestamp;
 
