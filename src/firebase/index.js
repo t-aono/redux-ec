@@ -55,10 +55,10 @@ export const saveDoc = (collectionName, id, data) =>
 export const getSnapshot = (collectionName, id) =>
   getDoc(doc(db, collectionName, id));
 
-export const getCollection = (collectionName) => {
-  const q = query(collection(db, collectionName));
-  return getDocs(q);
-};
+export const getQuery = (collectionName, order, sort) =>
+  query(collection(db, collectionName), orderBy(order, sort));
+
+export const getCollection = async (query) => await getDocs(query);
 
 export const firebaseTimestamp = Timestamp;
 
