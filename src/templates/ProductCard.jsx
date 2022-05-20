@@ -1,44 +1,49 @@
-import { makeStyles } from "@material-ui/core";
-import { Card, CardContent, CardMedia, ListItemText, Menu, MenuItem, Typography } from "@mui/material";
-import { push } from "connected-react-router";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
-import { IconButton } from "@material-ui/core";
-import NoImage from '../assets/img/src/no_image.png';
+import { push } from "connected-react-router";
+import { Card, CardMedia, CardContent, IconButton, ListItemText, Menu, MenuItem, Typography } from "@mui/material";
+import { styled } from "@mui/system";
 import { MoreVert } from "@mui/icons-material";
+import NoImage from '../assets/img/src/no_image.png';
 import { deleteProduct } from "../reducks/products/operations";
+import { theme } from "../assets/theme";
 
-const useStyles = makeStyles((theme) => ({
-  root: {
-    [theme.breakpoints.down('sm')]: {
-      margin: 8,
-      width: 'calc(50% - 16px)'
-    },
-    [theme.breakpoints.up('sm')]: {
-      margin: 16,
-      width: 'calc(33.3% - 32px)'
-    }
+const CustomCard = styled(Card)({
+  [theme.breakpoints.down('sm')]: {
+    margin: 8,
+    width: 'calc(50% - 16px)'
   },
-  content: {
-    display: 'flex',
-    padding: '16px 8px',
-    textAlign: 'left',
-    '&:last-child': {
-      paddingBottom: 16
-    }
-  },
-  media: {
-    height: 0,
-    paddingTop: '100%'
-  },
-  price: {
-    color: theme.palette.secondary.main,
-    fontSize: 16
+  [theme.breakpoints.up('sm')]: {
+    margin: 16,
+    width: 'calc(33.3% - 32px)'
   }
-}));
+});
+
+const CustomCardMedia = styled(CardMedia)({
+  height: 0,
+  paddingTop: '100%'
+});
+
+const CustomCardContent = styled(CardContent)({
+  display: 'flex',
+  padding: '16px 8px',
+  textAlign: 'left',
+  '&:last-child': {
+    paddingBottom: 16
+  }
+});
+
+const CustomTypography = styled(Typography)({
+  color: theme.palette.secondary,
+  fontSize: 16
+});
+
+const CustomIconButton = styled(IconButton)({
+  width: 48,
+  heigth: 48
+});
 
 const ProductCard = (props) => {
-  const classes = useStyles();
   const dispatch = useDispatch();
 
   const [anchorEl, setAnchorEl] = useState(null);
@@ -55,24 +60,23 @@ const ProductCard = (props) => {
   const price = props.price.toLocaleString();
 
   return (
-    <Card className={classes.root}>
-      <CardMedia
-        className={classes.media}
+    <CustomCard>
+      <CustomCardMedia
         image={images[0].path}
         onClick={() => dispatch(push('/product' + props.id))}
       />
-      <CardContent className={classes.content}>
+      <CustomCardContent>
         <div onClick={() => dispatch(push('/product' + props.id))}>
           <Typography color="textSecondary" component="p">
             {props.name}
           </Typography>
-          <Typography className={classes.price} component="p">
+          <CustomTypography component="p">
             ¥{price}
-          </Typography>
+          </CustomTypography>
         </div>
-        <IconButton onClick={handleClick}>
+        <CustomIconButton onClick={handleClick}>
           <MoreVert />
-        </IconButton>
+        </CustomIconButton>
         <Menu
           anchorEl={anchorEl}
           keepMounted
@@ -91,8 +95,8 @@ const ProductCard = (props) => {
             }}
           ><ListItemText>削除する</ListItemText></MenuItem>
         </Menu>
-      </CardContent>
-    </Card>
+      </CustomCardContent>
+    </CustomCard>
   );
 };
 

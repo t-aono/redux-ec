@@ -76,6 +76,6 @@ export const downloadImageUrl = (fileName) =>
   getDownloadURL(ref(storage, `images/${fileName}`));
 
 export const deleteImageFile = (fileName) =>
-  deleteObject(storage, `images/${fileName}`);
+  deleteObject(ref(storage, `images/${fileName}`));
 
 // export const functions = firebase.functions();

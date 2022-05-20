@@ -1,19 +1,15 @@
-import { InputLabel, MenuItem, FormControl, Select } from "@material-ui/core";
-import { makeStyles } from "@material-ui/styles";
+import { FormControl, InputLabel, MenuItem, Select } from "@mui/material";
+import { styled } from "@mui/system";
 
-const useStyles = makeStyles({
-  formControl: {
-    marginBottom: 16,
-    marginWidth: 128,
-    width: "100%"
-  }
+const CustomFormControl = styled(FormControl)({
+  marginBottom: 16,
+  marginWidth: 128,
+  width: "100%"
 });
 
 const SelectBox = (props) => {
-  const classes = useStyles();
-
   return (
-    <FormControl className={classes.formControl}>
+    <CustomFormControl>
       <InputLabel>{props.label}</InputLabel>
       <Select
         required={props.required} value={props.value}
@@ -23,7 +19,7 @@ const SelectBox = (props) => {
           <MenuItem key={option.id} value={option.value}>{option.name}</MenuItem>
         ))}
       </Select>
-    </FormControl>
+    </CustomFormControl>
   );
 };
 

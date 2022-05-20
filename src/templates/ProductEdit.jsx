@@ -71,6 +71,7 @@ const ProductEdit = () => {
         <TextInput
           fullWidth={true} label={"商品説明"} multiline={true} required={true} onChange={inputDescription} rows={5} value={description} type={"text"}
         />
+        <div className="module-spacer--extra-small"></div>
         <SelectBox
           label={"カテゴリー"} required={true} options={categories} select={setCategory} value={category}
         ></SelectBox>

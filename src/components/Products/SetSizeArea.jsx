@@ -1,31 +1,19 @@
-import TableContainer from "@material-ui/core/TableContainer";
-import { Paper } from "@mui/material";
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableHead from '@material-ui/core/TableHead';
-import TableRow from '@material-ui/core/TableRow';
-import IconButton from '@material-ui/core/IconButton';
+import { useCallback, useMemo, useState } from "react";
+import { Box, IconButton, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
 import { CheckCircle } from "@mui/icons-material";
 import { Delete } from "@mui/icons-material";
+import { styled } from "@mui/system";
 import { Edit } from "@mui/icons-material";
-import { makeStyles } from "@material-ui/styles";
 import { TextInput } from "../UIkit";
-import { useCallback, useMemo, useState } from "react";
 
-const useStyles = makeStyles({
-  checkIcon: {
-    float: "right"
-  },
-  iconCell: {
-    height: 48,
-    width: 48
-  }
+const CustomIconButton = styled(IconButton)({
+  float: "right",
+  height: 48,
+  width: 48
 });
 
-const SetSizeArea = (props) => {
-  const classes = useStyles();
 
+const SetSizeArea = (props) => {
   const [index, setIndex] = useState(0),
     [size, setSize] = useState(''),
     [quantity, setQuantity] = useState(0);
@@ -81,8 +69,8 @@ const SetSizeArea = (props) => {
             <TableRow>
               <TableCell >サイズ</TableCell>
               <TableCell>数量</TableCell>
-              <TableCell className={classes.iconCell} />
-              <TableCell className={classes.iconCell} />
+              <TableCell />
+              <TableCell />
             </TableRow>
           </TableHead>
           <TableBody>
@@ -92,12 +80,12 @@ const SetSizeArea = (props) => {
                   <TableCell>{item.size}</TableCell>
                   <TableCell>{item.quantity}</TableCell>
                   <TableCell>
-                    <IconButton className={classes.iconCell} onClick={() => editSize(i, item.size, item.quantity)}>
+                    <IconButton onClick={() => editSize(i, item.size, item.quantity)}>
                       <Edit />
                     </IconButton>
                   </TableCell>
                   <TableCell>
-                    <IconButton className={classes.iconCell} onClick={() => deleteSize(i)}>
+                    <IconButton onClick={() => deleteSize(i)}>
                       <Delete />
                     </IconButton>
                   </TableCell>
@@ -106,17 +94,17 @@ const SetSizeArea = (props) => {
             )}
           </TableBody>
         </Table>
-        <div>
+        <Box sx={{ display: 'flex' }}>
           <TextInput
             fullWidth={false} label={"サイズ"} multiline={false} required={true} rows={1} onChange={(event) => inputSize(event)} value={size} type={"text"}
           />
           <TextInput
             fullWidth={false} label={"数量"} multiline={false} required={true} rows={1} onChange={(event) => inputQuantity(event)} value={quantity} type={"number"}
           />
-          <IconButton className={classes.checkIcon} onClick={() => addSize(index, size, quantity)}>
-            <CheckCircle />
-          </IconButton>
-        </div>
+        </Box>
+        <CustomIconButton onClick={() => addSize(index, size, quantity)}>
+          <CheckCircle />
+        </CustomIconButton>
       </TableContainer>
     </div>
   );

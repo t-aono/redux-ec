@@ -1,4 +1,4 @@
-import TextField from "@material-ui/core/TextField";
+import { TextField } from "@mui/material";
 
 const TextInput = (props) => {
   return (
@@ -13,7 +13,7 @@ const TextInput = (props) => {
       type={props.type}
       onChange={props.onChange}
     />
-  )
-}
+  );
+};
 
 export default TextInput;
