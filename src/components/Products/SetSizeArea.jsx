@@ -1,9 +1,7 @@
 import { useCallback, useMemo, useState } from "react";
 import { Box, IconButton, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
-import { CheckCircle } from "@mui/icons-material";
-import { Delete } from "@mui/icons-material";
+import { CheckCircle, Delete, Edit } from "@mui/icons-material";
 import { styled } from "@mui/system";
-import { Edit } from "@mui/icons-material";
 import { TextInput } from "../UIkit";
 
 const CustomIconButton = styled(IconButton)({

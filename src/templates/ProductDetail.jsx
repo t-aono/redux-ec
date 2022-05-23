@@ -3,6 +3,7 @@ import HTMLReactParser from "html-react-parser";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { theme } from "../assets/theme";
+import { ImageSwiper, SizeTable } from "../components/Products";
 import { getSnapshot } from "../firebase";
 
 const SliderBox = styled('div')({
@@ -60,11 +61,14 @@ const ProductDetail = () => {
     <section className="c-section-wrapin">
       {product && (
         <div className="p-grid__row">
-          <SliderBox></SliderBox>
+          <SliderBox>
+            <ImageSwiper images={product.images} />
+          </SliderBox>
           <Detail>
             <h2 className="u-text__headline">{product.name}</h2>
             <Price>{product.price.toLocaleString()}</Price>
             <div className="module-spacer--small"></div>
+            <SizeTable sizes={product.sizes} />
             <div className="module-spacer--small"></div>
             <p>{returnCodeToBar(product.description)}</p>
           </Detail>
