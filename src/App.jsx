@@ -1,13 +1,17 @@
-import Router from './Router'
+import Router from './Router';
+import { Header } from './components/Header';
 import './assets/reset.css';
-import './assets/style.css'
+import './assets/style.css';
 
 const App = () => {
   return (
-    <main>
-      <Router />
-    </main>
-  )
-}
+    <>
+      <Header />
+      <main className='c-main'>
+        <Router />
+      </main>
+    </>
+  );
+};
 
 export default App;

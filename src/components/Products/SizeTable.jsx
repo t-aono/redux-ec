@@ -1,4 +1,4 @@
-import { FavoriteBorder, ShoppingCart } from "@mui/icons-material";
+import { Favorite, ShoppingCart } from "@mui/icons-material";
 import { IconButton, styled, Table, TableBody, TableCell, TableContainer, TableRow } from "@mui/material";
 
 const SizeTable = (props) => {
@@ -33,7 +33,7 @@ const SizeTable = (props) => {
                   )}
                 </IconCell>
                 <IconCell>
-                  <FavoriteBorder />
+                  <Favorite />
                 </IconCell>
               </TableRow>
             ))
