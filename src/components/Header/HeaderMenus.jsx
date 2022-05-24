@@ -1,7 +1,7 @@
 import { Favorite, MoreVert, ShoppingCart } from "@mui/icons-material";
 import { Badge, IconButton } from "@mui/material";
 
-const HeaderMenus = () => {
+const HeaderMenus = (props) => {
   return (
     <>
       <IconButton>
@@ -12,7 +12,7 @@ const HeaderMenus = () => {
       <IconButton>
         <Favorite />
       </IconButton>
-      <IconButton>
+      <IconButton onClick={(event) => props.handleDrawerToggle(event)} >
         <MoreVert />
       </IconButton>
     </>

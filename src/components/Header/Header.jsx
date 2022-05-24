@@ -4,6 +4,8 @@ import { push } from "connected-react-router";
 import logo from '../../assets/img/src/logo.png';
 import { getIsSignedIn } from "../../reducks/users/selectors";
 import HeaderMenus from "./HeaderMenus";
+import CloseableDrawer from "./CloseableDrawer";
+import { useCallback, useState } from "react";
 
 const Root = styled('div')({
   flexGrow: 1
@@ -29,6 +31,15 @@ const Header = () => {
   const isSignedIn = getIsSignedIn(selector);
   const dispatch = useDispatch();
 
+  const [open, setOpen] = useState(false);
+
+  const handleDrawerToggle = useCallback((event) => {
+    if (event.type === 'keydown') {
+      return;
+    }
+    setOpen(!open);
+  }, [setOpen, open]);
+
   return (
     <Root>
       <CustomAppBar position='fixed'>
@@ -36,11 +47,12 @@ const Header = () => {
           <img src={logo} alt="logo" width="128px" onClick={() => dispatch(push('/'))} />
           {isSignedIn && (
             <IconButtons>
-              <HeaderMenus />
+              <HeaderMenus handleDrawerToggle={handleDrawerToggle} />
             </IconButtons>
           )}
         </CustomToolbar>
       </CustomAppBar>
+      <CloseableDrawer open={open} onClose={handleDrawerToggle} />
     </Root>
   );
 };
