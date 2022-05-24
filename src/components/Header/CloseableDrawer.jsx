@@ -56,7 +56,10 @@ const CloseableDrawer = (props) => {
         onClose={(e) => props.onClose(e)}
         ModalProps={{ keepMounted: true }}
       >
-        <div>
+        <div
+          onClose={(e) => props.onClose(e)}
+          onKeyDown={(e) => props.onClose(e)}
+        >
           <SearchField>
             <TextInput
               fullWidtH={false} label="キーワードを入力" multiline={false} onChange={inputKeyword} required={false} rows={1} value={keyword} type="text" />

@@ -1,10 +1,11 @@
 import styled from "@emotion/styled";
 import HTMLReactParser from "html-react-parser";
-import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useCallback, useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { theme } from "../assets/theme";
 import { ImageSwiper, SizeTable } from "../components/Products";
-import { getSnapshot } from "../firebase";
+import { firebaseTimestamp, getSnapshot } from "../firebase";
+import { addProductToCart } from "../reducks/users/operations";
 
 const SliderBox = styled('div')({
   [theme.breakpoints.down('sm')]: {
@@ -39,6 +40,7 @@ const ProductDetail = () => {
   const selector = useSelector((state) => state);
   const path = selector.router.location.pathname;
   const id = path.split('/product/')[1];
+  const dispatch = useDispatch();
 
   const [product, setProduct] = useState(null);
 
@@ -57,6 +59,21 @@ const ProductDetail = () => {
     }
   };
 
+  const addProduct = useCallback((selectedSize) => {
+    const timestamp = firebaseTimestamp.now();
+    dispatch(addProductToCart({
+      added_at: timestamp,
+      description: product.description,
+      gender: product.gender,
+      images: product.images,
+      name: product.images,
+      price: product.price,
+      productId: product.id,
+      quantity: 1,
+      size: selectedSize
+    }));
+  }, [product]);
+
   return (
     <section className="c-section-wrapin">
       {product && (
@@ -68,7 +85,7 @@ const ProductDetail = () => {
             <h2 className="u-text__headline">{product.name}</h2>
             <Price>{product.price.toLocaleString()}</Price>
             <div className="module-spacer--small"></div>
-            <SizeTable sizes={product.sizes} />
+            <SizeTable addProduct={addProduct} sizes={product.sizes} />
             <div className="module-spacer--small"></div>
             <p>{returnCodeToBar(product.description)}</p>
           </Detail>

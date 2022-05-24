@@ -18,6 +18,8 @@ import {
   query,
   orderBy,
   deleteDoc,
+  onSnapshot,
+  refEqual,
 } from "firebase/firestore";
 import {
   getDownloadURL,
@@ -48,10 +50,18 @@ export const resetPasswordWithEmail = (email) =>
 
 export const db = getFirestore(app);
 
-export const getDocRef = (param) => doc(collection(db, param));
+export const getDocRef = (param) => doc(collection(db, ...param));
 
 export const saveDoc = (collectionName, id, data) =>
   setDoc(doc(db, collectionName, id), data, { merge: true });
+
+export const saveSubCollection = (
+  collectionName,
+  id,
+  subCollection,
+  subId,
+  data
+) => setDoc(doc(db, collectionName, id, subCollection, subId), data);
 
 export const getSnapshot = (collectionName, id) =>
   getDoc(doc(db, collectionName, id));
@@ -60,6 +70,13 @@ export const getQuery = (collectionName, order, sort) =>
   query(collection(db, collectionName), orderBy(order, sort));
 
 export const getCollection = async (query) => await getDocs(query);
+
+export const listenSubCollection = (
+  collectionName,
+  id,
+  subCollection,
+  callback
+) => onSnapshot(collection(db, collectionName, id, subCollection), callback);
 
 export const removeDoc = (collectionName, id) =>
   deleteDoc(doc(db, collectionName, id));

@@ -1,4 +1,8 @@
-import { signInAction, signOutAction } from "./actions";
+import {
+  fetchProductsInCartAction,
+  signInAction,
+  signOutAction,
+} from "./actions";
 import { push } from "connected-react-router";
 import {
   createUser,
@@ -9,7 +13,26 @@ import {
   onAuthState,
   signOutAuth,
   resetPasswordWithEmail,
+  saveSubCollection,
+  getDocRef,
 } from "../../firebase/index";
+
+export const addProductToCart = (addedProduct) => {
+  return async (dispatch, getState) => {
+    const uid = getState().users.uid;
+    const cartRef = getDocRef("users", uid, "cart");
+    addedProduct["cartId"] = cartRef.id;
+    console.log(cartRef.id);
+    await saveSubCollection("users", uid, "cart", cartRef.id, addedProduct);
+    dispatch(push("/"));
+  };
+};
+
+export const fetchProductsInCart = (products) => {
+  return async (dispatch) => {
+    dispatch(fetchProductsInCartAction(products));
+  };
+};
 
 export const listenAuthState = () => {
   return async (dispatch) => {
