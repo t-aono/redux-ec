@@ -19,7 +19,6 @@ import {
   orderBy,
   deleteDoc,
   onSnapshot,
-  refEqual,
 } from "firebase/firestore";
 import {
   getDownloadURL,
@@ -33,6 +32,7 @@ import { firebaseConfig } from "./config";
 
 const app = initializeApp(firebaseConfig);
 
+// Authentication
 export const auth = getAuth();
 
 export const onAuthState = (callback) => onAuthStateChanged(auth, callback);
@@ -48,6 +48,7 @@ export const signOutAuth = () => signOut(auth);
 export const resetPasswordWithEmail = (email) =>
   sendPasswordResetEmail(auth, email);
 
+// Firestore
 export const db = getFirestore(app);
 
 export const getDocRef = (param) => doc(collection(db, ...param));
@@ -83,6 +84,7 @@ export const removeDoc = (collectionName, id) =>
 
 export const firebaseTimestamp = Timestamp;
 
+// Storage
 export const storage = getStorage(app);
 
 export const getImageRef = (fileName) => ref(storage, `images/${fileName}`);

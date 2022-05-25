@@ -14,12 +14,9 @@ const HeaderMenus = (props) => {
 
   useEffect(() => {
     const unsubscribe = listenSubCollection('users', uid, 'cart', (snapshots) => {
-      // console.log(snapshots);
       snapshots.docChanges().forEach((change) => {
         const product = change.doc.data();
         const changeType = change.type;
-
-        console.log(product, changeType);
 
         switch (changeType) {
           case 'added':
