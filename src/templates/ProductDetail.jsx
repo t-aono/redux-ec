@@ -4,7 +4,7 @@ import { useCallback, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { theme } from "../assets/theme";
 import { ImageSwiper, SizeTable } from "../components/Products";
-import { firebaseTimestamp, getSnapshot } from "../firebase";
+import { FirebaseTimestamp, getSnapshot } from "../firebase";
 import { addProductToCart } from "../reducks/users/operations";
 
 const SliderBox = styled('div')({
@@ -60,7 +60,7 @@ const ProductDetail = () => {
   };
 
   const addProduct = useCallback((selectedSize) => {
-    const timestamp = firebaseTimestamp.now();
+    const timestamp = FirebaseTimestamp.now();
     dispatch(addProductToCart({
       added_at: timestamp,
       description: product.description,

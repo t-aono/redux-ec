@@ -7,7 +7,7 @@ import { push } from "connected-react-router";
 import {
   createUser,
   signInWithEmail,
-  firebaseTimestamp,
+  FirebaseTimestamp,
   updateDoc,
   getSnapshot,
   onAuthState,
@@ -128,7 +128,7 @@ export const signUp = (username, email, password, confirmPassword) => {
 
       if (user) {
         const uid = user.uid;
-        const timestamp = firebaseTimestamp.now();
+        const timestamp = FirebaseTimestamp.now();
 
         const userInitialData = {
           created_at: timestamp,

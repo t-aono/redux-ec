@@ -19,6 +19,7 @@ import {
   orderBy,
   deleteDoc,
   onSnapshot,
+  writeBatch,
 } from "firebase/firestore";
 import {
   getDownloadURL,
@@ -70,7 +71,14 @@ export const listenCollection = (param, callback) =>
 
 export const removeDoc = (param) => deleteDoc(doc(db, ...param));
 
-export const firebaseTimestamp = Timestamp;
+export const makeBatch = () => writeBatch(db);
+
+export const updateBatch = (batch, param, data) =>
+  batch.update(doc(db, ...param), data);
+
+export const deleteBatch = (batch, param) => batch.delete(doc(db, ...param));
+
+export const FirebaseTimestamp = Timestamp;
 
 // Storage
 export const storage = getStorage(app);
