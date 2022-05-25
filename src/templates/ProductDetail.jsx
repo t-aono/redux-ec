@@ -45,7 +45,7 @@ const ProductDetail = () => {
   const [product, setProduct] = useState(null);
 
   useEffect(() => {
-    getSnapshot('products', id).then(snapshot => {
+    getSnapshot(['products', id]).then(snapshot => {
       const data = snapshot.data();
       setProduct(data);
     });
@@ -66,7 +66,7 @@ const ProductDetail = () => {
       description: product.description,
       gender: product.gender,
       images: product.images,
-      name: product.images,
+      name: product.name,
       price: product.price,
       productId: product.id,
       quantity: 1,

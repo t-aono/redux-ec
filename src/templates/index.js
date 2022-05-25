@@ -5,3 +5,4 @@ export { default as Reset } from "./Reset";
 export { default as ProductList } from "./ProductList";
 export { default as ProductCard } from "./ProductCard";
 export { default as ProductEdit } from "./ProductEdit";
+export { default as CartList } from "./CartList";

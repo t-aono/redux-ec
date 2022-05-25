@@ -2,9 +2,10 @@ import { Favorite, MoreVert, ShoppingCart } from "@mui/icons-material";
 import { Badge, IconButton } from "@mui/material";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { listenSubCollection } from "../../firebase";
+import { listenCollection } from "../../firebase";
 import { getProductsInCart, getUserId } from "../../reducks/users/selectors";
 import { fetchProductsInCart } from "../../reducks/users/operations";
+import { push } from "connected-react-router";
 
 const HeaderMenus = (props) => {
   const dispatch = useDispatch();
@@ -13,7 +14,7 @@ const HeaderMenus = (props) => {
   let productsInCart = getProductsInCart(selector);
 
   useEffect(() => {
-    const unsubscribe = listenSubCollection('users', uid, 'cart', (snapshots) => {
+    const unsubscribe = listenCollection(['users', uid, 'cart'], (snapshots) => {
       snapshots.docChanges().forEach((change) => {
         const product = change.doc.data();
         const changeType = change.type;
@@ -27,7 +28,7 @@ const HeaderMenus = (props) => {
             productsInCart[index] = product;
             break;
           case 'removed':
-            productsInCart = productsInCart.filter(product => product.cartId === change.doc.id);
+            productsInCart = productsInCart.filter(product => product.cartId !== change.doc.id);
             break;
           default:
             break;
@@ -42,7 +43,7 @@ const HeaderMenus = (props) => {
 
   return (
     <>
-      <IconButton>
+      <IconButton onClick={() => dispatch(push('/cart'))}>
         <Badge badgeContent={productsInCart.length} color="secondary">
           <ShoppingCart />
         </Badge>

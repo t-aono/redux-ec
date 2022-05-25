@@ -53,34 +53,22 @@ export const db = getFirestore(app);
 
 export const getDocRef = (param) => doc(collection(db, ...param));
 
-export const saveDoc = (collectionName, id, data) =>
-  setDoc(doc(db, collectionName, id), data, { merge: true });
+export const updateDoc = (param, data) =>
+  setDoc(doc(db, ...param), data, { merge: true });
 
-export const saveSubCollection = (
-  collectionName,
-  id,
-  subCollection,
-  subId,
-  data
-) => setDoc(doc(db, collectionName, id, subCollection, subId), data);
+export const addDoc = (param, data) => setDoc(doc(db, ...param), data);
 
-export const getSnapshot = (collectionName, id) =>
-  getDoc(doc(db, collectionName, id));
+export const getSnapshot = (param) => getDoc(doc(db, ...param));
 
 export const getQuery = (collectionName, order, sort) =>
   query(collection(db, collectionName), orderBy(order, sort));
 
 export const getCollection = async (query) => await getDocs(query);
 
-export const listenSubCollection = (
-  collectionName,
-  id,
-  subCollection,
-  callback
-) => onSnapshot(collection(db, collectionName, id, subCollection), callback);
+export const listenCollection = (param, callback) =>
+  onSnapshot(collection(db, ...param), callback);
 
-export const removeDoc = (collectionName, id) =>
-  deleteDoc(doc(db, collectionName, id));
+export const removeDoc = (param) => deleteDoc(doc(db, ...param));
 
 export const firebaseTimestamp = Timestamp;
 

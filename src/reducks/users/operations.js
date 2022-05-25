@@ -8,22 +8,21 @@ import {
   createUser,
   signInWithEmail,
   firebaseTimestamp,
-  saveDoc,
+  updateDoc,
   getSnapshot,
   onAuthState,
   signOutAuth,
   resetPasswordWithEmail,
-  saveSubCollection,
+  addDoc,
   getDocRef,
 } from "../../firebase/index";
 
 export const addProductToCart = (addedProduct) => {
   return async (dispatch, getState) => {
     const uid = getState().users.uid;
-    const cartRef = getDocRef("users", uid, "cart");
+    const cartRef = getDocRef(["users", uid, "cart"]);
     addedProduct["cartId"] = cartRef.id;
-    console.log(cartRef.id);
-    await saveSubCollection("users", uid, "cart", cartRef.id, addedProduct);
+    await addDoc(["users", uid, "cart", cartRef.id], addedProduct);
     dispatch(push("/"));
   };
 };
@@ -40,7 +39,7 @@ export const listenAuthState = () => {
       if (user) {
         const uid = user.uid;
 
-        getSnapshot("users", uid).then((snapshot) => {
+        getSnapshot(["users", uid]).then((snapshot) => {
           const data = snapshot.data();
 
           dispatch(
@@ -88,7 +87,7 @@ export const signIn = (email, password) => {
       if (user) {
         const uid = user.uid;
 
-        getSnapshot("users", uid).then((snapshot) => {
+        getSnapshot(["users", uid]).then((snapshot) => {
           const data = snapshot.data();
 
           dispatch(
@@ -140,7 +139,7 @@ export const signUp = (username, email, password, confirmPassword) => {
           username: username,
         };
 
-        saveDoc("users", uid, userInitialData).then(() => {
+        updateDoc(["users", uid], userInitialData).then(() => {
           dispatch(push("/signin"));
         });
       }

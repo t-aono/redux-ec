@@ -47,7 +47,7 @@ const ProductEdit = () => {
 
   useEffect(() => {
     if (id !== '') {
-      getSnapshot('products', id).then(snapshot => {
+      getSnapshot(['products', id]).then(snapshot => {
         const data = snapshot.data();
         setImages(data.images);
         setName(data.name);

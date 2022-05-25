@@ -1,7 +1,7 @@
 import {
   firebaseTimestamp,
   getDocRef,
-  saveDoc,
+  updateDoc,
   getCollection,
   getQuery,
   removeDoc,
@@ -57,13 +57,13 @@ export const saveProduct = (
     };
 
     if (id === "") {
-      const ref = getDocRef("products");
+      const ref = getDocRef(["products"]);
       id = ref.id;
       data.id = id;
       data.created_at = timestamp;
     }
 
-    return saveDoc("products", id, data)
+    return updateDoc(["products", id], data)
       .then(() => {
         dispatch(push("/"));
       })
