@@ -61,8 +61,8 @@ export const addDoc = (param, data) => setDoc(doc(db, ...param), data);
 
 export const getSnapshot = (param) => getDoc(doc(db, ...param));
 
-export const getQuery = (collectionName, order, sort) =>
-  query(collection(db, collectionName), orderBy(order, sort));
+export const getQuery = (param, order, sort) =>
+  query(collection(db, ...param), orderBy(order, sort));
 
 export const getCollection = async (query) => await getDocs(query);
 

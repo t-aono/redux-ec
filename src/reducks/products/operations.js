@@ -27,7 +27,7 @@ export const deleteProduct = (id) => {
 export const fetchProducts = () => {
   return async (dispatch) => {
     const productList = [];
-    const query = getQuery("products", "update_at", "desc");
+    const query = getQuery(["products"], "update_at", "desc");
     const snapshots = await getCollection(query);
     snapshots.forEach((snapshot) => {
       const product = snapshot.data();

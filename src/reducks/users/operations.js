@@ -1,4 +1,5 @@
 import {
+  fetchOrdersHistoryAction,
   fetchProductsInCartAction,
   signInAction,
   signOutAction,
@@ -15,6 +16,8 @@ import {
   resetPasswordWithEmail,
   addDoc,
   getDocRef,
+  getQuery,
+  getCollection,
 } from "../../firebase/index";
 
 export const addProductToCart = (addedProduct) => {
@@ -24,6 +27,22 @@ export const addProductToCart = (addedProduct) => {
     addedProduct["cartId"] = cartRef.id;
     await addDoc(["users", uid, "cart", cartRef.id], addedProduct);
     dispatch(push("/"));
+  };
+};
+
+export const fetchOrdersHistory = () => {
+  return async (dispatch, getState) => {
+    const uid = getState().users.uid;
+    const list = [];
+
+    const query = getQuery(["users", uid, "orders"], "updated_at", "desc");
+    const snapshots = await getCollection(query);
+    snapshots.forEach((snapshot) => {
+      const data = snapshot.data();
+      list.push(data);
+    });
+
+    dispatch(fetchOrdersHistoryAction(list));
   };
 };
 
