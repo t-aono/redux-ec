@@ -1,9 +1,6 @@
-import { Delete } from "@mui/icons-material";
+import { Delete, ShoppingCart } from "@mui/icons-material";
 import { Divider, IconButton, ListItemAvatar, ListItemText } from "@mui/material";
 import { styled } from "@mui/system";
-import { useSelector } from "react-redux";
-import { removeDoc } from "../../firebase";
-import { getUserId } from "../../reducks/users/selectors";
 
 const CustomListItem = styled('div')({
   height: 128,
@@ -29,18 +26,13 @@ const Text = styled('div')({
   padding: 8
 });
 
-const CartListItem = (props) => {
-  const selector = useSelector(state => state);
-  const uid = getUserId(selector);
-
+const ListItem = (props) => {
   const image = props.product.images[0].path;
   const name = props.product.name;
   const size = props.product.size;
   const price = props.product.price.toLocaleString();
-
-  const removeProductFromCart = (id) => {
-    return removeDoc(['users', uid, 'cart', id]);
-  };
+  const remove = props.remove;
+  const moveToCart = props.moveToCart ? props.moveToCart : null;
 
   return (
     <>
@@ -52,7 +44,12 @@ const CartListItem = (props) => {
           <ListItemText primary={name} secondary={"サイズ：" + size} />
           <ListItemText primary={"¥" + price} />
         </Text>
-        <CustomIconButton onClick={() => removeProductFromCart(props.product.cartId)}>
+        {moveToCart && (
+          <CustomIconButton onClick={moveToCart} >
+            <ShoppingCart />
+          </CustomIconButton>
+        )}
+        <CustomIconButton onClick={remove}>
           <Delete />
         </CustomIconButton>
       </CustomListItem>
@@ -61,4 +58,4 @@ const CartListItem = (props) => {
   );
 };
 
-export default CartListItem;
+export default ListItem;

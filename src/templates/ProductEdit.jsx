@@ -61,7 +61,6 @@ const ProductEdit = () => {
     getCollection(query).then(snapshots => {
       snapshots.forEach(snapshot => {
         const data = snapshot.data();
-        console.log(data);
         list.push({
           id: data.id,
           value: data.id,

@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { theme } from "../assets/theme";
 import { ImageSwiper, SizeTable } from "../components/Products";
 import { FirebaseTimestamp, getSnapshot } from "../firebase";
-import { addProductToCart } from "../reducks/users/operations";
+import { addProductToCart, addProductToFavorite } from "../reducks/users/operations";
 
 const SliderBox = styled('div')({
   [theme.breakpoints.down('sm')]: {
@@ -59,9 +59,24 @@ const ProductDetail = () => {
     }
   };
 
-  const addProduct = useCallback((selectedSize) => {
+  const addToCart = useCallback((selectedSize) => {
     const timestamp = FirebaseTimestamp.now();
     dispatch(addProductToCart({
+      added_at: timestamp,
+      description: product.description,
+      gender: product.gender,
+      images: product.images,
+      name: product.name,
+      price: product.price,
+      productId: product.id,
+      quantity: 1,
+      size: selectedSize
+    }));
+  }, [product]);
+
+  const addToFavorite = useCallback((selectedSize) => {
+    const timestamp = FirebaseTimestamp.now();
+    dispatch(addProductToFavorite({
       added_at: timestamp,
       description: product.description,
       gender: product.gender,
@@ -85,7 +100,7 @@ const ProductDetail = () => {
             <h2 className="u-text__headline">{product.name}</h2>
             <Price>{product.price.toLocaleString()}</Price>
             <div className="module-spacer--small"></div>
-            <SizeTable addProduct={addProduct} sizes={product.sizes} />
+            <SizeTable addToCart={addToCart} addToFavorite={addToFavorite} sizes={product.sizes} />
             <div className="module-spacer--small"></div>
             <p>{returnCodeToBar(product.description)}</p>
           </Detail>

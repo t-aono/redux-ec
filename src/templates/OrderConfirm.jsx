@@ -3,7 +3,7 @@ import { styled } from "@mui/system";
 import { useCallback, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { theme } from "../assets/theme";
-import { CartListItem } from "../components/Products";
+import { ListItem } from "../components/Products";
 import { PrimaryButton, TextDetail } from "../components/UIkit";
 import { orderProduct } from "../reducks/products/operations";
 import { getProductsInCart } from '../reducks/users/selectors';
@@ -52,7 +52,7 @@ const OrderConfirm = () => {
         <DetailBox>
           <List>
             {productsInCart.length > 0 && (
-              productsInCart.map(product => <CartListItem key={product.cartId} product={product} />)
+              productsInCart.map(product => <ListItem key={product.cartId} product={product} />)
             )}
           </List>
         </DetailBox>

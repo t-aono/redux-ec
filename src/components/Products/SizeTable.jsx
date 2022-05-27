@@ -25,7 +25,7 @@ const SizeTable = (props) => {
                 </TableCell>
                 <IconCell>
                   {size.quantity > 0 ? (
-                    <IconButton onClick={() => props.addProduct(size.size)}>
+                    <IconButton onClick={() => props.addToCart(size.size)}>
                       <ShoppingCart />
                     </IconButton>
                   ) : (
@@ -33,7 +33,9 @@ const SizeTable = (props) => {
                   )}
                 </IconCell>
                 <IconCell>
-                  <Favorite />
+                  <IconButton onClick={() => props.addToFavorite(size.size)}>
+                    <Favorite />
+                  </IconButton>
                 </IconCell>
               </TableRow>
             ))

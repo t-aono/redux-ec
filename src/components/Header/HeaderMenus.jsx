@@ -3,8 +3,8 @@ import { Badge, IconButton } from "@mui/material";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { listenCollection } from "../../firebase";
-import { getProductsInCart, getUserId } from "../../reducks/users/selectors";
-import { fetchProductsInCart } from "../../reducks/users/operations";
+import { getProductsInCart, getProductsInFavorite, getUserId } from "../../reducks/users/selectors";
+import { fetchProductsInCart, fetchProductsInFavorite } from "../../reducks/users/operations";
 import { push } from "connected-react-router";
 
 const HeaderMenus = (props) => {
@@ -12,6 +12,7 @@ const HeaderMenus = (props) => {
   const selector = useSelector((state) => state);
   const uid = getUserId(selector);
   let productsInCart = getProductsInCart(selector);
+  let productsInFavorite = getProductsInFavorite(selector);
 
   useEffect(() => {
     const unsubscribe = listenCollection(['users', uid, 'cart'], (snapshots) => {
@@ -41,6 +42,34 @@ const HeaderMenus = (props) => {
     return () => unsubscribe();
   }, []);
 
+  useEffect(() => {
+    const unsubscribe = listenCollection(['users', uid, 'favorite'], (snapshots) => {
+      snapshots.docChanges().forEach((change) => {
+        const product = change.doc.data();
+        const changeType = change.type;
+
+        switch (changeType) {
+          case 'added':
+            productsInFavorite.push(product);
+            break;
+          case 'modified':
+            const index = productsInFavorite.findIndex(product => product.favoriteId === change.doc.id);
+            productsInFavorite[index] = product;
+            break;
+          case 'removed':
+            productsInFavorite = productsInFavorite.filter(product => product.favoriteId !== change.doc.id);
+            break;
+          default:
+            break;
+        }
+      });
+
+      dispatch(fetchProductsInFavorite(productsInFavorite));
+    });
+
+    return () => unsubscribe();
+  }, []);
+
   return (
     <>
       <IconButton onClick={() => dispatch(push('/cart'))}>
@@ -48,8 +77,10 @@ const HeaderMenus = (props) => {
           <ShoppingCart />
         </Badge>
       </IconButton>
-      <IconButton>
-        <Favorite />
+      <IconButton onClick={() => dispatch(push('/favorite'))}>
+        <Badge badgeContent={productsInFavorite.length} color="secondary">
+          <Favorite />
+        </Badge>
       </IconButton>
       <IconButton onClick={(event) => props.handleDrawerToggle(event)} >
         <MoreVert />
