@@ -5,7 +5,8 @@ import { useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { ListItem } from "../components/Products";
 import { GreyButton } from "../components/UIkit";
-import { removeDoc } from "../firebase";
+import { FirebaseTimestamp, removeDoc } from "../firebase";
+import { moveProductToCart } from "../reducks/users/operations";
 import { getProductsInFavorite, getUserId } from "../reducks/users/selectors";
 
 const FavoriteList = () => {
@@ -24,16 +25,26 @@ const FavoriteList = () => {
     dispatch(push('/'));
   }, []);
 
-  const removeProductFromFavorite = (id) => {
-    return removeDoc(['users', uid, 'favorite', id]);
-  };
+  const removeProductFromFavorite = useCallback(({ favoriteId }) => {
+    return removeDoc(['users', uid, 'favorite', favoriteId]);
+  }, []);
+
+  const moveToCart = useCallback(product => {
+    const { favoriteId } = product;
+    removeDoc(['users', uid, 'favorite', favoriteId]);
+
+    const timestamp = FirebaseTimestamp.now();
+    dispatch(moveProductToCart({
+      ...product, added_at: timestamp
+    }));
+  }, []);
 
   return (
     <section className="c-section-wrapin">
       <h2 className="u-text__headline">お気に入り</h2>
       <CustomList>
         {productsInFavorite.length > 0 && (
-          productsInFavorite.map(product => <ListItem key={product.favoriteId} product={product} remove={() => removeProductFromFavorite(product.favoriteId)} />)
+          productsInFavorite.map(product => <ListItem key={product.favoriteId} product={product} remove={() => removeProductFromFavorite(product)} moveToCart={() => moveToCart(product)} />)
         )}
       </CustomList>
       <div className="module-spacer--medium"></div>

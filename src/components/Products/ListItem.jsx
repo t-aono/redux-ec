@@ -1,9 +1,6 @@
 import { Delete, ShoppingCart } from "@mui/icons-material";
 import { Divider, IconButton, ListItemAvatar, ListItemText } from "@mui/material";
 import { styled } from "@mui/system";
-import { useSelector } from "react-redux";
-import { removeDoc } from "../../firebase";
-import { getUserId } from "../../reducks/users/selectors";
 
 const CustomListItem = styled('div')({
   height: 128,
@@ -35,6 +32,7 @@ const ListItem = (props) => {
   const size = props.product.size;
   const price = props.product.price.toLocaleString();
   const remove = props.remove;
+  const moveToCart = props.moveToCart ? props.moveToCart : null;
 
   return (
     <>
@@ -46,6 +44,11 @@ const ListItem = (props) => {
           <ListItemText primary={name} secondary={"サイズ：" + size} />
           <ListItemText primary={"¥" + price} />
         </Text>
+        {moveToCart && (
+          <CustomIconButton onClick={moveToCart} >
+            <ShoppingCart />
+          </CustomIconButton>
+        )}
         <CustomIconButton onClick={remove}>
           <Delete />
         </CustomIconButton>

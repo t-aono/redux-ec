@@ -28,16 +28,16 @@ const CartList = () => {
     dispatch(push('/'));
   }, []);
 
-  const removeProductFromCart = (id) => {
-    return removeDoc(['users', uid, 'cart', id]);
-  };
+  const removeProductFromCart = useCallback(({ cartId }) => {
+    return removeDoc(['users', uid, 'cart', cartId]);
+  }, []);
 
   return (
     <section className="c-section-wrapin">
       <h2 className="u-text__headline">ショッピングカート</h2>
       <CustomList>
         {productsInCart.length > 0 && (
-          productsInCart.map(product => <ListItem key={product.cartId} product={product} remove={() => removeProductFromCart(product.cartId)} />)
+          productsInCart.map(product => <ListItem key={product.cartId} product={product} remove={() => removeProductFromCart(product)} />)
         )}
       </CustomList>
       <div className="module-spacer--medium"></div>

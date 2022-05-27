@@ -41,6 +41,16 @@ export const addProductToFavorite = (addedProduct) => {
   };
 };
 
+export const moveProductToCart = (movedProduct) => {
+  return async (dispatch, getState) => {
+    const uid = getState().users.uid;
+    const cartRef = getDocRef(["users", uid, "cart"]);
+    movedProduct["cartId"] = cartRef.id;
+    await addDoc(["users", uid, "cart", cartRef.id], movedProduct);
+    dispatch(push("/"));
+  };
+};
+
 export const fetchOrdersHistory = () => {
   return async (dispatch, getState) => {
     const uid = getState().users.uid;
