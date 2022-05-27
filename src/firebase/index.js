@@ -20,6 +20,7 @@ import {
   deleteDoc,
   onSnapshot,
   writeBatch,
+  where,
 } from "firebase/firestore";
 import {
   getDownloadURL,
@@ -63,6 +64,13 @@ export const getSnapshot = (param) => getDoc(doc(db, ...param));
 
 export const getQuery = (param, order, sort) =>
   query(collection(db, ...param), orderBy(order, sort));
+
+export const getFilterQuery = (param, order, sort, filter, value) =>
+  query(
+    collection(db, ...param),
+    where(filter, "==", value),
+    orderBy(order, sort)
+  );
 
 export const getCollection = async (query) => await getDocs(query);
 

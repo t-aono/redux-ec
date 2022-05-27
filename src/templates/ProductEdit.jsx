@@ -2,7 +2,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { ImageArea, SetSizeArea } from '../components/Products/index';
 import { TextInput, SelectBox, PrimaryButton } from '../components/UIkit';
-import { getSnapshot } from '../firebase';
+import { getCollection, getQuery, getSnapshot } from '../firebase';
 import { saveProduct } from '../reducks/products/operations';
 
 const ProductEdit = () => {
@@ -16,6 +16,7 @@ const ProductEdit = () => {
   const [name, setName] = useState(""),
     [description, setDescription] = useState(''),
     [category, setCategory] = useState(''),
+    [categories, setCategories] = useState([]),
     [gender, setGender] = useState(''),
     [images, setImages] = useState([]),
     [price, setPrice] = useState(''),
@@ -32,12 +33,6 @@ const ProductEdit = () => {
   const inputPrice = useCallback((event) => {
     setPrice(event.target.value);
   }, [setPrice]);
-
-  const categories = [
-    { id: 'tops', value: 1, name: 'トップス' },
-    { id: 'shirts', value: 2, name: 'シャツ' },
-    { id: 'pants', value: 3, name: 'パンツ' },
-  ];
 
   const genders = [
     { id: 'all', value: 1, name: 'すべて' },
@@ -59,6 +54,23 @@ const ProductEdit = () => {
       });
     }
   }, [id]);
+
+  useEffect(() => {
+    const query = getQuery(['categories'], 'order', 'asc');
+    const list = [];
+    getCollection(query).then(snapshots => {
+      snapshots.forEach(snapshot => {
+        const data = snapshot.data();
+        console.log(data);
+        list.push({
+          id: data.id,
+          value: data.id,
+          name: data.name
+        });
+      });
+      setCategories(list);
+    });
+  }, []);
 
   return (
     <section>

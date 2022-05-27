@@ -10,6 +10,7 @@ import {
   addDoc,
   updateBatch,
   deleteBatch,
+  getFilterQuery,
 } from "../../firebase";
 import { push } from "connected-react-router";
 import { deleteProductAction, fetchProductsAction } from "./actions";
@@ -24,10 +25,28 @@ export const deleteProduct = (id) => {
   };
 };
 
-export const fetchProducts = () => {
+export const fetchProducts = (gender, category) => {
   return async (dispatch) => {
     const productList = [];
-    const query = getQuery(["products"], "update_at", "desc");
+    let query = getQuery(["products"], "update_at", "desc");
+    if (gender !== "") {
+      query = getFilterQuery(
+        ["products"],
+        "update_at",
+        "desc",
+        "gender",
+        gender
+      );
+    }
+    if (category !== "") {
+      query = getFilterQuery(
+        ["products"],
+        "update_at",
+        "desc",
+        "category",
+        category
+      );
+    }
     const snapshots = await getCollection(query);
     snapshots.forEach((snapshot) => {
       const product = snapshot.data();
