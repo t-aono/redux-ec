@@ -3,14 +3,16 @@ import { styled } from "@mui/system";
 import { push } from "connected-react-router";
 import { useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { CartListItem } from "../components/Products/index";
+import { ListItem } from "../components/Products/index";
 import { GreyButton, PrimaryButton } from "../components/UIkit";
-import { getProductsInCart } from "../reducks/users/selectors";
+import { removeDoc } from "../firebase";
+import { getProductsInCart, getUserId } from "../reducks/users/selectors";
 
 const CartList = () => {
+  const dispatch = useDispatch();
   const selector = useSelector((state) => state);
   const productsInCart = getProductsInCart(selector);
-  const dispatch = useDispatch();
+  const uid = getUserId(selector);
 
   const CustomList = styled(List)({
     margin: '0 auto',
@@ -26,12 +28,16 @@ const CartList = () => {
     dispatch(push('/'));
   }, []);
 
+  const removeProductFromCart = (id) => {
+    return removeDoc(['users', uid, 'cart', id]);
+  };
+
   return (
     <section className="c-section-wrapin">
       <h2 className="u-text__headline">ショッピングカート</h2>
       <CustomList>
         {productsInCart.length > 0 && (
-          productsInCart.map(product => <CartListItem key={product.cartId} product={product} />)
+          productsInCart.map(product => <ListItem key={product.cartId} product={product} remove={() => removeProductFromCart(product.cartId)} />)
         )}
       </CustomList>
       <div className="module-spacer--medium"></div>
