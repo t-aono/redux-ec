@@ -98,7 +98,7 @@ const ProductDetail = () => {
           </SliderBox>
           <Detail>
             <h2 className="u-text__headline">{product.name}</h2>
-            <Price>{product.price.toLocaleString()}</Price>
+            <Price>¥{product.price.toLocaleString()}</Price>
             <div className="module-spacer--small"></div>
             <SizeTable addToCart={addToCart} addToFavorite={addToFavorite} sizes={product.sizes} />
             <div className="module-spacer--small"></div>
