@@ -115,7 +115,6 @@ export const orderProduct = (productsInCart, amount) => {
       batch
         .commit()
         .then(() => {
-          console.log("commit");
           const orderRef = getDocRef(["users", uid, "orders"]);
           const date = timestamp.toDate();
           const shippingDate = FirebaseTimestamp.fromDate(
