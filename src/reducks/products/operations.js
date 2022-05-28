@@ -16,8 +16,15 @@ import { push } from "connected-react-router";
 import {
   deleteProductAction,
   fetchProductsAction,
+  pageChangeAction,
   searchProductAction,
 } from "./actions";
+
+export const pageChange = (page) => {
+  return async (dispatch) => {
+    dispatch(pageChangeAction(page));
+  };
+};
 
 export const deleteProduct = (id) => {
   return async (dispatch, getState) => {

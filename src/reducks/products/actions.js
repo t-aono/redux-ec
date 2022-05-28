@@ -1,3 +1,11 @@
+export const PAGE_CHANGE = "PAGE_CHANGE";
+export const pageChangeAction = (page) => {
+  return {
+    type: "PAGE_CHANGE",
+    payload: page,
+  };
+};
+
 export const DELETE_PRODUCT = "DELETE_PRODUCT";
 export const deleteProductAction = (products) => {
   return {
