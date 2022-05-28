@@ -13,7 +13,11 @@ import {
   getFilterQuery,
 } from "../../firebase";
 import { push } from "connected-react-router";
-import { deleteProductAction, fetchProductsAction } from "./actions";
+import {
+  deleteProductAction,
+  fetchProductsAction,
+  searchProductAction,
+} from "./actions";
 
 export const deleteProduct = (id) => {
   return async (dispatch, getState) => {
@@ -22,6 +26,16 @@ export const deleteProduct = (id) => {
       const nextProducts = prevProducts.filter((product) => product.id !== id);
       dispatch(deleteProductAction(nextProducts));
     });
+  };
+};
+
+export const searchProduct = (keyword) => {
+  return async (dispatch, getState) => {
+    const prevProducts = getState().products.list;
+    const searchedProducts = prevProducts.filter((product) =>
+      product.name.includes(keyword)
+    );
+    dispatch(searchProductAction(searchedProducts));
   };
 };
 

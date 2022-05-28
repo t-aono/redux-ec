@@ -1,5 +1,5 @@
 export { default as CartList } from "./CartList";
-export { default as Home } from "./Home";
+export { default as Complete } from "./Complete";
 export { default as OrderConfirm } from "./OrderConfirm";
 export { default as OrderHistory } from "./OrderHistory";
 export { default as ProductCard } from "./ProductCard";

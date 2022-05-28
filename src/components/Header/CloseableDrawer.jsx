@@ -8,6 +8,7 @@ import { theme } from '../../assets/theme';
 import { TextInput } from '../UIkit/index';
 import { signOut } from '../../reducks/users/operations';
 import { getCollection, getQuery } from "../../firebase";
+import { fetchProducts, searchProduct } from "../../reducks/products/operations";
 
 const CustomNav = styled('nav')({
   [theme.breakpoints.up('sm')]: {
@@ -50,8 +51,16 @@ const CloseableDrawer = (props) => {
   const menus = [
     { func: selectMenu, label: '商品登録', icon: <Add />, id: 'register', value: '/product/edit' },
     { func: selectMenu, label: '注文履歴', icon: <History />, id: 'history', value: '/order/history' },
-    { func: selectMenu, label: 'プロフィール', icon: <Person />, id: 'profile', value: '/user/mypage' },
+    // { func: selectMenu, label: 'プロフィール', icon: <Person />, id: 'profile', value: '/user/mypage' },
   ];
+
+  const onClickSearch = useCallback((keyword) => {
+    if (keyword) {
+      dispatch(searchProduct(keyword));
+    } else {
+      dispatch(fetchProducts('', ''));
+    }
+  });
 
   useEffect(() => {
     const query = getQuery(['categories'], 'order', 'asc');
@@ -75,18 +84,18 @@ const CloseableDrawer = (props) => {
         onClose={(e) => props.onClose(e)}
         ModalProps={{ keepMounted: true }}
       >
+        <SearchField>
+          <TextInput
+            fullWidtH={false} label="キーワードを入力" multiline={false} onChange={inputKeyword} required={false} rows={1} value={keyword} type="text" />
+          <IconButton onClick={() => onClickSearch(keyword)}>
+            <Search />
+          </IconButton>
+        </SearchField>
+        <Divider />
         <div
           onClose={(e) => props.onClose(e)}
           onKeyDown={(e) => props.onClose(e)}
         >
-          <SearchField>
-            <TextInput
-              fullWidtH={false} label="キーワードを入力" multiline={false} onChange={inputKeyword} required={false} rows={1} value={keyword} type="text" />
-            <IconButton>
-              <Search />
-            </IconButton>
-          </SearchField>
-          <Divider />
           <List>
             {menus.map(menu => (
               <ListItem button key={menu.id} onClick={(e) => menu.func(e, menu.value)} >

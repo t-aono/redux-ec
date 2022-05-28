@@ -6,6 +6,14 @@ export const deleteProductAction = (products) => {
   };
 };
 
+export const SEARCH_PRODUCT = "SEARCH_PRODUCT";
+export const searchProductAction = (products) => {
+  return {
+    type: "SEARCH_PRODUCT",
+    payload: products,
+  };
+};
+
 export const FETCH_PRODUCTS = "FETCH_PRODUCTS";
 export const fetchProductsAction = (products) => {
   return {

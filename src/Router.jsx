@@ -1,5 +1,5 @@
 import { Route, Switch } from 'react-router';
-import { SignUp, SignIn, Reset, ProductEdit, ProductList, CartList, ProductDetail, OrderConfirm, OrderHistory } from "./templates";
+import { SignUp, SignIn, Reset, ProductEdit, ProductList, CartList, ProductDetail, OrderConfirm, OrderHistory, Complete } from "./templates";
 import Auth from './Auth';
 import FavoriteList from './templates/FavoriteList';
 
@@ -17,6 +17,7 @@ const Router = () => {
         <Route exact path="/order/confirm" component={OrderConfirm} />
         <Route exact path="/order/history" component={OrderHistory} />
         <Route exact path='/favorite' component={FavoriteList} />
+        <Route exact path='/complete' component={Complete} />
       </Auth>
     </Switch>
   );
