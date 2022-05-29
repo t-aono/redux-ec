@@ -23,9 +23,9 @@ export const searchProductAction = (products) => {
 };
 
 export const FETCH_PRODUCTS = "FETCH_PRODUCTS";
-export const fetchProductsAction = (products) => {
+export const fetchProductsAction = (products, maxPage) => {
   return {
     type: "FETCH_PRODUCTS",
-    payload: products,
+    payload: { list: products, maxPage: maxPage },
   };
 };

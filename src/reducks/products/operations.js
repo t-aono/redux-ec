@@ -46,7 +46,7 @@ export const searchProduct = (keyword) => {
   };
 };
 
-export const fetchProducts = (gender, category) => {
+export const fetchProducts = (gender, category, countPerPage) => {
   return async (dispatch) => {
     const productList = [];
     let query = getQuery(["products"], "update_at", "desc");
@@ -73,7 +73,8 @@ export const fetchProducts = (gender, category) => {
       const product = snapshot.data();
       productList.push(product);
     });
-    dispatch(fetchProductsAction(productList));
+    const maxPage = Math.ceil(productList.length / countPerPage);
+    dispatch(fetchProductsAction(productList, maxPage));
   };
 };
 

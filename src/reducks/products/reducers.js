@@ -21,7 +21,8 @@ export const ProductReducer = (state = initialState.products, action) => {
     case Actions.FETCH_PRODUCTS:
       return {
         ...state,
-        list: [...action.payload],
+        list: [...action.payload.list],
+        maxPage: action.payload.maxPage,
       };
     default:
       return state;
