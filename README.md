@@ -27,6 +27,8 @@ Functions は無料枠だとデプロイできないのでそれ以外を指定�
 
 ## 画面イメージ
 
+![M0rFUjdiUTDbtWSqDo6a1653885118-1653885146](https://user-images.githubusercontent.com/46856574/170917773-c40a0940-3bf5-4934-b587-d19be2ff4130.gif)
+
 ## 教材
 
 **[日本一わかりやすい React-Redux 入門](https://www.youtube.com/playlist?list=PLX8Rsrpnn3IWavNOj3n4Vypzwb3q1RXhr)**
