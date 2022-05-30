@@ -1,6 +1,8 @@
 const initialState = {
   products: {
     list: [],
+    currentPage: 1,
+    maxPage: 1,
   },
   users: {
     cart: [],

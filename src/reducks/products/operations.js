@@ -16,8 +16,15 @@ import { push } from "connected-react-router";
 import {
   deleteProductAction,
   fetchProductsAction,
+  pageChangeAction,
   searchProductAction,
 } from "./actions";
+
+export const pageChange = (page) => {
+  return async (dispatch) => {
+    dispatch(pageChangeAction(page));
+  };
+};
 
 export const deleteProduct = (id) => {
   return async (dispatch, getState) => {
@@ -39,7 +46,7 @@ export const searchProduct = (keyword) => {
   };
 };
 
-export const fetchProducts = (gender, category) => {
+export const fetchProducts = (gender, category, countPerPage) => {
   return async (dispatch) => {
     const productList = [];
     let query = getQuery(["products"], "update_at", "desc");
@@ -66,7 +73,8 @@ export const fetchProducts = (gender, category) => {
       const product = snapshot.data();
       productList.push(product);
     });
-    dispatch(fetchProductsAction(productList));
+    const maxPage = Math.ceil(productList.length / countPerPage);
+    dispatch(fetchProductsAction(productList, maxPage));
   };
 };
 
