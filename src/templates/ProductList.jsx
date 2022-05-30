@@ -12,7 +12,7 @@ const ProductList = () => {
   const products = getProducts(selector);
   const currentPage = getCurrentPage(selector);
   const maxPage = getMaxPage(selector);
-  const countPerPage = 3;
+  const countPerPage = 6;
   const [currentProducts, setCurrentProducts] = useState([]);
 
   const query = selector.router.location.search;
@@ -21,7 +21,7 @@ const ProductList = () => {
 
   useEffect(() => {
     dispatch(fetchProducts(gender, category, countPerPage));
-  }, []);
+  }, [query]);
 
   useEffect(() => {
     const list = products.slice(0, products.length);
@@ -41,9 +41,11 @@ const ProductList = () => {
           ))
         )}
       </div>
-      <Stack direction="column" spacing={3} alignItems="center" mt={5}>
-        <Pagination count={maxPage} page={currentPage} onChange={handlePageChange} />
-      </Stack>
+      {maxPage > 1 && (
+        <Stack direction="column" spacing={3} alignItems="center" mt={5}>
+          <Pagination count={maxPage} page={currentPage} onChange={handlePageChange} />
+        </Stack>
+      )}
     </section>
   );
 };
