@@ -55,9 +55,11 @@ const ListItem = (props) => {
             <ShoppingCart />
           </CustomIconButton>
         )}
-        <CustomIconButton onClick={remove}>
-          <Delete />
-        </CustomIconButton>
+        {remove && (
+          <CustomIconButton onClick={remove}>
+            <Delete />
+          </CustomIconButton>
+        )}
       </CustomListItem>
       <Divider />
     </>

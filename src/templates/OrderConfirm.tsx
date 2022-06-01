@@ -4,10 +4,11 @@ import { styled } from "@mui/system";
 import { useDispatch, useSelector } from "react-redux";
 import { theme } from "../assets/theme";
 import { ListItem } from "../components/Products";
-import { PrimaryButton, TextDetail } from "../components/UIkit";
+import { GreyButton, PrimaryButton, TextDetail } from "../components/UIkit";
 import { orderProduct } from "../reducks/products/operations";
 import { getProductsInCart } from "../reducks/users/selectors";
 import { UsersState } from "../reducks/users/type";
+import { push } from "connected-react-router";
 
 const DetailBox = styled("div")({
   margin: "0 auto",
@@ -46,6 +47,10 @@ const OrderConfirm = () => {
     dispatch(orderProduct(productsInCart, total));
   }, [productsInCart, total]);
 
+  const backToCart = useCallback(() => {
+    dispatch(push("/cart"));
+  }, []);
+
   return (
     <section className="c-section-wrapin">
       <h2 className="u-text__headline">注文の確認</h2>
@@ -70,6 +75,8 @@ const OrderConfirm = () => {
           <PrimaryButton label="注文する" onClick={order} />
         </OrderBox>
       </div>
+      <div className="module-spacer--extra-extra-small"></div>
+      <GreyButton label="戻る" onClick={backToCart} />
     </section>
   );
 };

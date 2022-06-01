@@ -101,12 +101,18 @@ const HeaderMenus = (props) => {
   return (
     <>
       <IconButton onClick={() => dispatch(push("/cart"))}>
-        <Badge badgeContent={productsInCart.length} color="secondary">
+        <Badge
+          badgeContent={productsInCart ? productsInCart.length : 0}
+          color="secondary"
+        >
           <ShoppingCart />
         </Badge>
       </IconButton>
       <IconButton onClick={() => dispatch(push("/favorite"))}>
-        <Badge badgeContent={productsInFavorite.length} color="secondary">
+        <Badge
+          badgeContent={productsInFavorite ? productsInFavorite.length : 0}
+          color="secondary"
+        >
           <Favorite />
         </Badge>
       </IconButton>

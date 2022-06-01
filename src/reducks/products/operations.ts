@@ -31,7 +31,7 @@ export const pageChange = (page) => {
 
 export const deleteProduct = (id) => {
   return async (dispatch, getState) => {
-    removeDoc("products", id).then(() => {
+    removeDoc("products", [id]).then(() => {
       const prevProducts = getState().products.list;
       const nextProducts = prevProducts.filter((product) => product.id !== id);
       dispatch(deleteProductAction(nextProducts));
