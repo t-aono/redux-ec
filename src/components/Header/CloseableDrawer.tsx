@@ -11,7 +11,7 @@ import {
 } from "@mui/material";
 import { styled } from "@mui/system";
 import { push } from "connected-react-router";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { theme } from "../../assets/theme";
 import { TextInput } from "../UIkit/index";
 import { signOut } from "../../reducks/users/operations";
@@ -20,6 +20,9 @@ import {
   fetchProducts,
   searchProduct,
 } from "../../reducks/products/operations";
+import { getPerPage } from "../../reducks/products/selectors";
+import { ProductsState } from "../../reducks/products/types";
+import { OnMenuClose, MenuEvent } from "./types";
 
 const CustomNav = styled("nav")({
   [theme.breakpoints.up("sm")]: {
@@ -38,20 +41,19 @@ const SearchField = styled("div")({
   marginLeft: 32,
 });
 
-const CloseableDrawer = (props) => {
-  const { container } = props;
-  const dispatch = useDispatch();
+const CloseableDrawer = (props: { open: boolean; onClose: OnMenuClose }) => {
+  const dispatch: any = useDispatch();
 
   const [keyword, setKeyword] = useState("");
 
   const inputKeyword = useCallback(
-    (event) => {
-      setKeyword(event.target.value);
+    (event: MenuEvent) => {
+      setKeyword((event.target as HTMLInputElement).value);
     },
     [setKeyword]
   );
 
-  const selectMenu = (event, path) => {
+  const selectMenu = (event: MenuEvent, path: string) => {
     dispatch(push(path));
     props.onClose(event);
   };
@@ -85,20 +87,28 @@ const CloseableDrawer = (props) => {
     // { func: selectMenu, label: 'プロフィール', icon: <Person />, id: 'profile', value: '/user/mypage' },
   ];
 
-  const onClickSearch = useCallback((keyword) => {
+  const selector = useSelector((state: ProductsState) => state);
+  const perPage = getPerPage(selector);
+
+  const onClickSearch = useCallback((keyword: string) => {
     if (keyword) {
       dispatch(searchProduct(keyword));
     } else {
-      dispatch(fetchProducts("", ""));
+      dispatch(fetchProducts("", "", perPage));
     }
-  });
+  }, []);
 
   useEffect(() => {
     const query = getQuery(["categories"], "order", "asc");
-    const list = [];
+    const list: {
+      func: (event: MenuEvent, path: string) => void;
+      label: string;
+      id: string;
+      value: string;
+    }[] = [];
     getCollection(query).then((snapshots) => {
       snapshots.forEach((snapshot) => {
-        const category = snapshot.data();
+        const category = snapshot.data() as { id: string; name: string };
         list.push({
           func: selectMenu,
           label: category.name,
@@ -113,16 +123,15 @@ const CloseableDrawer = (props) => {
   return (
     <CustomNav>
       <DrawerPaper
-        container={container}
         variant="temporary"
         anchor="right"
         open={props.open}
-        onClose={(e) => props.onClose(e)}
+        onClose={(e: MenuEvent) => props.onClose(e)}
         ModalProps={{ keepMounted: true }}
       >
         <SearchField>
           <TextInput
-            fullWidtH={false}
+            fullWidth={false}
             label="キーワードを入力"
             multiline={false}
             onChange={inputKeyword}
@@ -136,16 +145,13 @@ const CloseableDrawer = (props) => {
           </IconButton>
         </SearchField>
         <Divider />
-        <div
-          onClose={(e) => props.onClose(e)}
-          onKeyDown={(e) => props.onClose(e)}
-        >
+        <div onKeyDown={(e) => props.onClose(e)}>
           <List>
             {menus.map((menu) => (
               <ListItem
                 button
                 key={menu.id}
-                onClick={(e) => menu.func(e, menu.value)}
+                onClick={(e: MenuEvent) => menu.func(e, menu.value)}
               >
                 <ListItemIcon>{menu.icon}</ListItemIcon>
                 <ListItemText primary={menu.label} />
@@ -164,7 +170,7 @@ const CloseableDrawer = (props) => {
               <ListItem
                 button
                 key={filter.id}
-                onClick={(e) => filter.func(e, filter.value)}
+                onClick={(e: MenuEvent) => filter.func(e, filter.value)}
               >
                 <ListItemText primary={filter.label}></ListItemText>
               </ListItem>

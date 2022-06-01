@@ -9,7 +9,7 @@ const TextInput = (props: {
   rows: number;
   value: string;
   type: string;
-  onChange: () => void;
+  onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
 }) => {
   return (
     <TextField

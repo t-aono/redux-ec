@@ -9,6 +9,7 @@ import {
 } from "../reducks/products/selectors";
 import ProductCard from "./ProductCard";
 import { Stack } from "@mui/material";
+import { getPerPage } from "../reducks/products/selectors";
 
 const ProductList = () => {
   const dispatch = useDispatch();
@@ -16,7 +17,7 @@ const ProductList = () => {
   const products = getProducts(selector);
   const currentPage = getCurrentPage(selector);
   const maxPage = getMaxPage(selector);
-  const countPerPage = 6;
+  const perPage = getPerPage(selector);
   const [currentProducts, setCurrentProducts] = useState([]);
 
   const query = selector.router.location.search;
@@ -28,14 +29,12 @@ const ProductList = () => {
     : "";
 
   useEffect(() => {
-    dispatch(fetchProducts(gender, category, countPerPage));
+    dispatch(fetchProducts(gender, category, perPage));
   }, [query]);
 
   useEffect(() => {
     const list = products.slice(0, products.length);
-    setCurrentProducts(
-      list.splice((currentPage - 1) * countPerPage, countPerPage)
-    );
+    setCurrentProducts(list.splice((currentPage - 1) * perPage, perPage));
   }, [products, currentPage]);
 
   const handlePageChange = useCallback((event, value) => {

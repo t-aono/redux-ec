@@ -1,3 +1,5 @@
+import { ProductState } from "../products/types";
+
 export type UsersState = {
   users: UserState;
 };
@@ -5,9 +7,21 @@ export type UsersState = {
 export type UserState = {
   uid?: string;
   username?: string;
-  isSignIn?: boolean;
+  isSignedIn?: boolean;
   role?: string;
   orders?: [];
-  cart?: [];
-  favorite?: [];
+  cart?: Cart[];
+  favorite?: Favorite[];
 };
+
+interface CartId {
+  cartId: string;
+}
+
+interface FavoriteId {
+  favoriteId: string;
+}
+
+type Cart = ProductState & CartId;
+
+type Favorite = ProductState & FavoriteId;

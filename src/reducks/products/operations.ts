@@ -19,6 +19,7 @@ import {
   pageChangeAction,
   searchProductAction,
 } from "./actions";
+import { Dispatch } from "redux";
 
 export const pageChange = (page) => {
   return async (dispatch) => {
@@ -36,8 +37,8 @@ export const deleteProduct = (id) => {
   };
 };
 
-export const searchProduct = (keyword) => {
-  return async (dispatch, getState) => {
+export const searchProduct = (keyword: string) => {
+  return async (dispatch: Dispatch, getState) => {
     const prevProducts = getState().products.list;
     const searchedProducts = prevProducts.filter((product) =>
       product.name.includes(keyword)
@@ -46,7 +47,7 @@ export const searchProduct = (keyword) => {
   };
 };
 
-export const fetchProducts = (gender, category, countPerPage) => {
+export const fetchProducts = (gender, category, perPage) => {
   return async (dispatch) => {
     const productList = [];
     let query = getQuery(["products"], "update_at", "desc");
@@ -73,7 +74,7 @@ export const fetchProducts = (gender, category, countPerPage) => {
       const product = snapshot.data();
       productList.push(product);
     });
-    const maxPage = Math.ceil(productList.length / countPerPage);
+    const maxPage = Math.ceil(productList.length / perPage);
     dispatch(fetchProductsAction(productList, maxPage));
   };
 };

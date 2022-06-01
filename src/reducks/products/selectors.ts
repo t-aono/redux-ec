@@ -1,6 +1,7 @@
 import { createSelector } from "reselect";
+import { ProductsState } from "./types";
 
-const productsSelector = (state) => state.products;
+const productsSelector = (state: ProductsState) => state.products;
 
 export const getProducts = createSelector(
   [productsSelector],
@@ -15,4 +16,9 @@ export const getCurrentPage = createSelector(
 export const getMaxPage = createSelector(
   [productsSelector],
   (state) => state.maxPage
+);
+
+export const getPerPage = createSelector(
+  [productsSelector],
+  (state) => state.perPage
 );
