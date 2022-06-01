@@ -10,10 +10,11 @@ import {
 import ProductCard from "./ProductCard";
 import { Stack } from "@mui/material";
 import { getPerPage } from "../reducks/products/selectors";
+import { ProductsState } from "../reducks/products/types";
 
 const ProductList = () => {
-  const dispatch = useDispatch();
-  const selector = useSelector((state) => state);
+  const dispatch: any = useDispatch();
+  const selector = useSelector((state: any) => state);
   const products = getProducts(selector);
   const currentPage = getCurrentPage(selector);
   const maxPage = getMaxPage(selector);

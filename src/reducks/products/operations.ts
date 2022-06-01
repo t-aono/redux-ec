@@ -20,6 +20,8 @@ import {
   searchProductAction,
 } from "./actions";
 import { Dispatch } from "redux";
+import { Product, Order } from "./types";
+import { ProductInCart } from "../users/type";
 
 export const pageChange = (page) => {
   return async (dispatch) => {
@@ -50,10 +52,11 @@ export const searchProduct = (keyword: string) => {
 export const fetchProducts = (gender, category, perPage) => {
   return async (dispatch) => {
     const productList = [];
-    let query = getQuery(["products"], "update_at", "desc");
+    let query = getQuery("products", [], "update_at", "desc");
     if (gender !== "") {
       query = getFilterQuery(
-        ["products"],
+        "products",
+        [],
         "update_at",
         "desc",
         "gender",
@@ -62,7 +65,8 @@ export const fetchProducts = (gender, category, perPage) => {
     }
     if (category !== "") {
       query = getFilterQuery(
-        ["products"],
+        "products",
+        [],
         "update_at",
         "desc",
         "category",
@@ -79,7 +83,7 @@ export const fetchProducts = (gender, category, perPage) => {
   };
 };
 
-export const orderProduct = (productsInCart, amount) => {
+export const orderProduct = (productsInCart: ProductInCart[], amount) => {
   return async (dispatch, getState) => {
     const uid = getState().users.uid;
     const timestamp = FirebaseTimestamp.now();
@@ -90,7 +94,7 @@ export const orderProduct = (productsInCart, amount) => {
     const batch = makeBatch();
 
     for (const product of productsInCart) {
-      const snapshot = await getSnapshot(["products", product.productId]);
+      const snapshot = await getSnapshot("products", [product.productId]);
       const sizes = snapshot.data().sizes;
 
       const updateSizes = sizes.map((size) => {
@@ -117,11 +121,11 @@ export const orderProduct = (productsInCart, amount) => {
         size: product.size,
       });
 
-      updateBatch(batch, ["products", product.productId], {
+      updateBatch(batch, "products", [product.productId], {
         sizes: updateSizes,
       });
 
-      deleteBatch(batch, ["users", uid, "cart", product.cartId]);
+      deleteBatch(batch, "users", [uid, "cart", product.cartId]);
     }
 
     if (soldOutProducts.length > 0) {
@@ -138,13 +142,13 @@ export const orderProduct = (productsInCart, amount) => {
       batch
         .commit()
         .then(() => {
-          const orderRef = getDocRef(["users", uid, "orders"]);
+          const orderRef = getDocRef("users", [uid, "orders"]);
           const date = timestamp.toDate();
           const shippingDate = FirebaseTimestamp.fromDate(
             new Date(date.setDate(date.getDate() + 3))
           );
 
-          const history = {
+          const history: Order = {
             amount: amount,
             created_at: timestamp,
             id: orderRef.id,
@@ -153,7 +157,7 @@ export const orderProduct = (productsInCart, amount) => {
             updated_at: timestamp,
           };
 
-          addDoc(["users", uid, "orders", orderRef.id], history);
+          addDoc("users", [uid, "orders", orderRef.id], history);
 
           dispatch(push("/order/complete"));
         })
@@ -180,7 +184,7 @@ export const saveProduct = (
   return async (dispatch) => {
     const timestamp = FirebaseTimestamp.now();
 
-    const data = {
+    const data: Product = {
       category: category,
       description: description,
       gender: gender,
@@ -192,13 +196,13 @@ export const saveProduct = (
     };
 
     if (id === "") {
-      const ref = getDocRef(["products"]);
+      const ref = getDocRef("products", []);
       id = ref.id;
-      data.id = id;
-      data.created_at = timestamp;
+      data["id"] = id;
+      data["created_at"] = timestamp;
     }
 
-    return updateDoc(["products", id], data)
+    return updateDoc("products", [id], data)
       .then(() => {
         dispatch(push("/"));
       })

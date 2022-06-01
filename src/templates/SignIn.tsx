@@ -5,7 +5,7 @@ import { signIn } from "../reducks/users/operations";
 import { push } from "connected-react-router";
 
 const SignIn = () => {
-  const dispatch = useDispatch();
+  const dispatch: any = useDispatch();
 
   const [email, setEmail] = useState(""),
     [password, setPassword] = useState("");

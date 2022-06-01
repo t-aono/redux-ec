@@ -21,15 +21,14 @@ import {
   getCollection,
 } from "../../firebase/index";
 import { UserState } from "./type";
-import { AnyAction, Dispatch } from "redux";
-import { AnyIfEmpty } from "react-redux";
+import { Dispatch } from "redux";
 
 export const addProductToCart = (addedProduct) => {
   return async (dispatch, getState) => {
     const uid = getState().users.uid;
-    const cartRef = getDocRef(["users", uid, "cart"]);
+    const cartRef = getDocRef("users", [uid, "cart"]);
     addedProduct["cartId"] = cartRef.id;
-    await addDoc(["users", uid, "cart", cartRef.id], addedProduct);
+    await addDoc("users", [uid, "cart", cartRef.id], addedProduct);
     dispatch(push("/"));
   };
 };
@@ -37,9 +36,9 @@ export const addProductToCart = (addedProduct) => {
 export const addProductToFavorite = (addedProduct) => {
   return async (dispatch, getState) => {
     const uid = getState().users.uid;
-    const favoriteRef = getDocRef(["users", uid, "favorite"]);
+    const favoriteRef = getDocRef("users", [uid, "favorite"]);
     addedProduct["favoriteId"] = favoriteRef.id;
-    await addDoc(["users", uid, "favorite", favoriteRef.id], addedProduct);
+    await addDoc("users", [uid, "favorite", favoriteRef.id], addedProduct);
     dispatch(push("/"));
   };
 };
@@ -47,9 +46,9 @@ export const addProductToFavorite = (addedProduct) => {
 export const moveProductToCart = (movedProduct) => {
   return async (dispatch, getState) => {
     const uid = getState().users.uid;
-    const cartRef = getDocRef(["users", uid, "cart"]);
+    const cartRef = getDocRef("users", [uid, "cart"]);
     movedProduct["cartId"] = cartRef.id;
-    await addDoc(["users", uid, "cart", cartRef.id], movedProduct);
+    await addDoc("users", [uid, "cart", cartRef.id], movedProduct);
     dispatch(push("/"));
   };
 };
@@ -59,7 +58,7 @@ export const fetchOrdersHistory = () => {
     const uid = getState().users.uid;
     const list = [];
 
-    const query = getQuery(["users", uid, "orders"], "updated_at", "desc");
+    const query = getQuery("users", [uid, "orders"], "updated_at", "desc");
     const snapshots = await getCollection(query);
     snapshots.forEach((snapshot) => {
       const data = snapshot.data();
@@ -88,12 +87,12 @@ export const listenAuthState = () => {
       if (user) {
         const uid = user.uid;
 
-        getSnapshot(["users", uid]).then((snapshot) => {
+        getSnapshot("users", [uid]).then((snapshot) => {
           const data = snapshot.data();
 
           dispatch(
             signInAction({
-              isSignIn: true,
+              isSignedIn: true,
               role: data?.role,
               uid: uid,
               username: data?.username,
@@ -136,12 +135,12 @@ export const signIn = (email, password) => {
       if (user) {
         const uid = user.uid;
 
-        getSnapshot(["users", uid]).then((snapshot) => {
+        getSnapshot("users", [uid]).then((snapshot) => {
           const data = snapshot.data();
 
           dispatch(
             signInAction({
-              isSignIn: true,
+              isSignedIn: true,
               role: data.role,
               uid: uid,
               username: data.username,
@@ -188,7 +187,7 @@ export const signUp = (username, email, password, confirmPassword) => {
           username: username,
         };
 
-        updateDoc(["users", uid], userInitialData).then(() => {
+        updateDoc("users", [uid], userInitialData).then(() => {
           dispatch(push("/signin"));
         });
       }

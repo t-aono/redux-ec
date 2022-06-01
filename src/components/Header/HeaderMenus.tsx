@@ -13,7 +13,11 @@ import {
   fetchProductsInFavorite,
 } from "../../reducks/users/operations";
 import { push } from "connected-react-router";
-import { UsersState } from "../../reducks/users/type";
+import {
+  UsersState,
+  ProductInCart,
+  ProductInFavorite,
+} from "../../reducks/users/type";
 
 const HeaderMenus = (props) => {
   const dispatch: any = useDispatch();
@@ -24,7 +28,8 @@ const HeaderMenus = (props) => {
 
   useEffect(() => {
     const unsubscribe = listenCollection(
-      ["users", uid, "cart"],
+      "users",
+      [uid, "cart"],
       (snapshots) => {
         snapshots.docChanges().forEach((change) => {
           const product = change.doc.data();
@@ -32,13 +37,13 @@ const HeaderMenus = (props) => {
 
           switch (changeType) {
             case "added":
-              productsInCart.push(product);
+              productsInCart.push(product as ProductInCart);
               break;
             case "modified":
               const index = productsInCart.findIndex(
                 (product) => product.cartId === change.doc.id
               );
-              productsInCart[index] = product;
+              productsInCart[index] = product as ProductInCart;
               break;
             case "removed":
               productsInCart = productsInCart.filter(
@@ -59,7 +64,8 @@ const HeaderMenus = (props) => {
 
   useEffect(() => {
     const unsubscribe = listenCollection(
-      ["users", uid, "favorite"],
+      "users",
+      [uid, "favorite"],
       (snapshots) => {
         snapshots.docChanges().forEach((change) => {
           const product = change.doc.data();
@@ -67,13 +73,13 @@ const HeaderMenus = (props) => {
 
           switch (changeType) {
             case "added":
-              productsInFavorite.push(product);
+              productsInFavorite.push(product as ProductInFavorite);
               break;
             case "modified":
               const index = productsInFavorite.findIndex(
                 (product) => product.favoriteId === change.doc.id
               );
-              productsInFavorite[index] = product;
+              productsInFavorite[index] = product as ProductInFavorite;
               break;
             case "removed":
               productsInFavorite = productsInFavorite.filter(

@@ -21,6 +21,9 @@ import {
   onSnapshot,
   writeBatch,
   where,
+  OrderByDirection,
+  WriteBatch,
+  QuerySnapshot,
 } from "firebase/firestore";
 import {
   getDownloadURL,
@@ -53,38 +56,64 @@ export const resetPasswordWithEmail = (email) =>
 // Firestore
 export const db = getFirestore(app);
 
-export const getDocRef = (param) => doc(collection(db, ...param));
+export const getDocRef = (path: string, segments: string[]) =>
+  doc(collection(db, path, ...segments));
 
-export const updateDoc = (param, data) =>
-  setDoc(doc(db, ...param), data, { merge: true });
+export const updateDoc = (path: string, segments: string[], data) =>
+  setDoc(doc(db, path, ...segments), data, { merge: true });
 
-export const addDoc = (param, data) => setDoc(doc(db, ...param), data);
+export const addDoc = (path: string, segments: string[], data) =>
+  setDoc(doc(db, path, ...segments), data);
 
-export const getSnapshot = (param) => getDoc(doc(db, ...param));
+export const getSnapshot = (path: string, segments: string[]) =>
+  getDoc(doc(db, path, ...segments));
 
-export const getQuery = (param, order, sort) =>
-  query(collection(db, ...param), orderBy(order, sort));
+export const getQuery = (
+  path: string,
+  segments: string[],
+  order: string,
+  sort: OrderByDirection
+) => query(collection(db, path, ...segments), orderBy(order, sort));
 
-export const getFilterQuery = (param, order, sort, filter, value) =>
+export const getFilterQuery = (
+  path: string,
+  segments: string[],
+  order: string,
+  sort: OrderByDirection,
+  filter: string,
+  value: string
+) =>
   query(
-    collection(db, ...param),
+    collection(db, path, ...segments),
     where(filter, "==", value),
     orderBy(order, sort)
   );
 
 export const getCollection = async (query) => await getDocs(query);
 
-export const listenCollection = (param, callback) =>
-  onSnapshot(collection(db, ...param), callback);
+export const listenCollection = (
+  path: string,
+  segments: string[],
+  callback: (snapshot: QuerySnapshot) => void
+) => onSnapshot(collection(db, path, ...segments), callback);
 
-export const removeDoc = (param) => deleteDoc(doc(db, ...param));
+export const removeDoc = (path: string, segments: string[]) =>
+  deleteDoc(doc(db, path, ...segments));
 
 export const makeBatch = () => writeBatch(db);
 
-export const updateBatch = (batch, param, data) =>
-  batch.update(doc(db, ...param), data);
+export const updateBatch = (
+  batch: WriteBatch,
+  path: string,
+  segments: string[],
+  data
+) => batch.update(doc(db, path, ...segments), data);
 
-export const deleteBatch = (batch, param) => batch.delete(doc(db, ...param));
+export const deleteBatch = (
+  batch: WriteBatch,
+  path: string,
+  segments: string[]
+) => batch.delete(doc(db, path, ...segments));
 
 export const FirebaseTimestamp = Timestamp;
 

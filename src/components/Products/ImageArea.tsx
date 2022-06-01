@@ -33,7 +33,7 @@ const ImageArea = (props) => {
         props.setImages((prevState) => [...prevState, newImage]);
       });
     });
-  });
+  }, []);
 
   const deleteImage = useCallback(
     async (id) => {

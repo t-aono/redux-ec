@@ -5,7 +5,7 @@ import { resetPassword } from "../reducks/users/operations";
 import { push } from "connected-react-router";
 
 const Reset = () => {
-  const dispatch = useDispatch();
+  const dispatch: any = useDispatch();
 
   const [email, setEmail] = useState("");
 

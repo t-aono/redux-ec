@@ -8,7 +8,7 @@ const CustomFormControl = styled(FormControl)({
   width: "100%",
 });
 
-interface TMenuItem {
+interface MenuItem {
   id: string;
   value: string;
   name: string;
@@ -19,7 +19,7 @@ const SelectBox = (props: {
   required: boolean;
   value: string;
   select: (value: string) => void;
-  options: TMenuItem[];
+  options: MenuItem[];
 }) => {
   return (
     <CustomFormControl>

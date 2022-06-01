@@ -5,6 +5,7 @@ import { theme } from "../assets/theme";
 import { OrderHistoryItem } from "../components/Products";
 import { fetchOrdersHistory } from "../reducks/users/operations";
 import { getOrdersHistory } from "../reducks/users/selectors";
+import { UsersState } from "../reducks/users/type";
 
 const OrderList = styled("div")({
   background: theme.palette.grey["100"],
@@ -19,8 +20,8 @@ const OrderList = styled("div")({
 });
 
 const OrderHistory = () => {
-  const dispatch = useDispatch();
-  const selector = useSelector((state) => state);
+  const dispatch: any = useDispatch();
+  const selector = useSelector((state: UsersState) => state);
   const orders = getOrdersHistory(selector);
 
   useEffect(() => {

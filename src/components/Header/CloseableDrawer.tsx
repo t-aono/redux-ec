@@ -99,7 +99,7 @@ const CloseableDrawer = (props: { open: boolean; onClose: OnMenuClose }) => {
   }, []);
 
   useEffect(() => {
-    const query = getQuery(["categories"], "order", "asc");
+    const query = getQuery("categories", [], "order", "asc");
     const list: {
       func: (event: MenuEvent, path: string) => void;
       label: string;

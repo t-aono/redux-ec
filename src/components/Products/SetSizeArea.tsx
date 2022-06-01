@@ -126,7 +126,7 @@ const SetSizeArea = (props) => {
             required={true}
             rows={1}
             onChange={(event) => inputQuantity(event)}
-            value={quantity}
+            value={String(quantity)}
             type={"number"}
           />
         </Box>

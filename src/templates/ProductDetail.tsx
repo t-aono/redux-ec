@@ -40,15 +40,15 @@ const Price = styled("p")({
 });
 
 const ProductDetail = () => {
-  const selector = useSelector((state) => state);
+  const selector = useSelector((state: any) => state);
   const path = selector.router.location.pathname;
   const id = path.split("/product/")[1];
-  const dispatch = useDispatch();
+  const dispatch: any = useDispatch();
 
   const [product, setProduct] = useState(null);
 
   useEffect(() => {
-    getSnapshot(["products", id]).then((snapshot) => {
+    getSnapshot("products", [id]).then((snapshot) => {
       const data = snapshot.data();
       setProduct(data);
     });

@@ -8,10 +8,11 @@ import { GreyButton } from "../components/UIkit";
 import { FirebaseTimestamp, removeDoc } from "../firebase";
 import { moveProductToCart } from "../reducks/users/operations";
 import { getProductsInFavorite, getUserId } from "../reducks/users/selectors";
+import { UsersState, ProductInFavorite } from "../reducks/users/type";
 
 const FavoriteList = () => {
-  const dispatch = useDispatch();
-  const selector = useSelector((state) => state);
+  const dispatch: any = useDispatch();
+  const selector = useSelector((state: UsersState) => state);
   const productsInFavorite = getProductsInFavorite(selector);
   const uid = getUserId(selector);
 
@@ -26,12 +27,12 @@ const FavoriteList = () => {
   }, []);
 
   const removeProductFromFavorite = useCallback(({ favoriteId }) => {
-    return removeDoc(["users", uid, "favorite", favoriteId]);
+    return removeDoc("users", [uid, "favorite", favoriteId]);
   }, []);
 
-  const moveToCart = useCallback((product) => {
+  const moveToCart = useCallback((product: ProductInFavorite) => {
     const { favoriteId } = product;
-    removeDoc(["users", uid, "favorite", favoriteId]);
+    removeDoc("users", [uid, "favorite", favoriteId]);
 
     const timestamp = FirebaseTimestamp.now();
     dispatch(

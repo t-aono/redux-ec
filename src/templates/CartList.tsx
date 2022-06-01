@@ -7,10 +7,11 @@ import { ListItem } from "../components/Products/index";
 import { GreyButton, PrimaryButton } from "../components/UIkit";
 import { removeDoc } from "../firebase";
 import { getProductsInCart, getUserId } from "../reducks/users/selectors";
+import { UsersState } from "../reducks/users/type";
 
 const CartList = () => {
   const dispatch = useDispatch();
-  const selector = useSelector((state) => state);
+  const selector = useSelector((state: UsersState) => state);
   const productsInCart = getProductsInCart(selector);
   const uid = getUserId(selector);
 
@@ -29,7 +30,7 @@ const CartList = () => {
   }, []);
 
   const removeProductFromCart = useCallback(({ cartId }) => {
-    return removeDoc(["users", uid, "cart", cartId]);
+    return removeDoc("users", [uid, "cart", cartId]);
   }, []);
 
   return (

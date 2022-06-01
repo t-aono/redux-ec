@@ -43,7 +43,6 @@ const CustomCardContent = styled(CardContent)({
 });
 
 const CustomTypography = styled(Typography)({
-  color: theme.palette.secondary,
   fontSize: 16,
 });
 
@@ -53,7 +52,7 @@ const CustomIconButton = styled(IconButton)({
 });
 
 const ProductCard = (props) => {
-  const dispatch = useDispatch();
+  const dispatch: any = useDispatch();
 
   const [anchorEl, setAnchorEl] = useState(null);
 
@@ -79,7 +78,7 @@ const ProductCard = (props) => {
           <Typography color="textSecondary" component="p">
             {props.name}
           </Typography>
-          <CustomTypography component="p">¥{price}</CustomTypography>
+          <CustomTypography>¥{price}</CustomTypography>
         </div>
         <CustomIconButton onClick={handleClick}>
           <MoreVert />

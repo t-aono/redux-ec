@@ -6,7 +6,7 @@ import { getCollection, getQuery, getSnapshot } from "../firebase";
 import { saveProduct } from "../reducks/products/operations";
 
 const ProductEdit = () => {
-  const dispatch = useDispatch();
+  const dispatch: any = useDispatch();
   let id = window.location.pathname.split("/product/edit")[1];
 
   if (id !== "") {
@@ -44,14 +44,14 @@ const ProductEdit = () => {
   );
 
   const genders = [
-    { id: "all", value: 1, name: "すべて" },
-    { id: "male", value: 2, name: "メンズ" },
-    { id: "female", value: 3, name: "レディース" },
+    { id: "all", value: "1", name: "すべて" },
+    { id: "male", value: "2", name: "メンズ" },
+    { id: "female", value: "3", name: "レディース" },
   ];
 
   useEffect(() => {
     if (id !== "") {
-      getSnapshot(["products", id]).then((snapshot) => {
+      getSnapshot("products", [id]).then((snapshot) => {
         const data = snapshot.data();
         setImages(data.images);
         setName(data.name);
@@ -65,11 +65,11 @@ const ProductEdit = () => {
   }, [id]);
 
   useEffect(() => {
-    const query = getQuery(["categories"], "order", "asc");
+    const query = getQuery("categories", [], "order", "asc");
     const list = [];
     getCollection(query).then((snapshots) => {
       snapshots.forEach((snapshot) => {
-        const data = snapshot.data();
+        const data = snapshot.data() as { id: string; name: string };
         list.push({
           id: data.id,
           value: data.id,

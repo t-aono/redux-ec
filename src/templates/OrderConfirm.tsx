@@ -7,6 +7,7 @@ import { ListItem } from "../components/Products";
 import { PrimaryButton, TextDetail } from "../components/UIkit";
 import { orderProduct } from "../reducks/products/operations";
 import { getProductsInCart } from "../reducks/users/selectors";
+import { UsersState } from "../reducks/users/type";
 
 const DetailBox = styled("div")({
   margin: "0 auto",
@@ -29,8 +30,8 @@ const OrderBox = styled("div")({
 });
 
 const OrderConfirm = () => {
-  const dispatch = useDispatch();
-  const selector = useSelector((state) => state);
+  const dispatch: any = useDispatch();
+  const selector = useSelector((state: UsersState) => state);
   const productsInCart = getProductsInCart(selector);
 
   const subtotal = useMemo(() => {
