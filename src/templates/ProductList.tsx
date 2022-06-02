@@ -10,7 +10,6 @@ import {
 import ProductCard from "./ProductCard";
 import { Stack } from "@mui/material";
 import { getPerPage } from "../reducks/products/selectors";
-import { ProductsState } from "../reducks/products/types";
 
 const ProductList = () => {
   const dispatch: any = useDispatch();
